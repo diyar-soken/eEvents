@@ -6,13 +6,14 @@ host-permission-message: "&eIf you want host a sumo event you need to be vip."
 setlobby: "&aSumo Lobby has been set."
 spawnpoint1: "&aSpawn point 1 set."
 spawnpoint2: "&aSpawn point 2 set."
+aldreadyon: "Event already on."
 noevent: "&aThere are no events hosted."
 alreadyin: "&cYou are already in the sumo event."
 joining: "&aJoining the sumo event.."
 in-game: "&eThe event is started."
 notenoughplayers: "&cNo enough players in the event."
 time: 30
-broadcast-time: "%player% Started Sumo event is going to begun in %time% seconds"
+broadcast-time: "%host% Started Sumo event is going to begun in %time% seconds"
 admin-help-command:
   - "&aSumo Admin Help"
   - " &7* &6/sumo setlobby &8- &fSets player lobby/spectating point"
@@ -23,3 +24,7 @@ help-command:
   - " &7* &6/sumo host 1/2 &8- &fHosts the sumo event"
   - " &7* &6/sumo join &8- &fJoins into the sumo event"
   - " &7* &6/sumo leave 1/2 &8- &fLeaves the sumo event"
+match-started:
+  - "&7&m------------------------"
+  - "&eMatch: &9%player1% &cvs &9%player2%"
+  - "&7&m------------------------"

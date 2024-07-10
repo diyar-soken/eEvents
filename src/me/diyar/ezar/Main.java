@@ -7,18 +7,13 @@ import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
-import java.util.ArrayList;
+
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.UUID;
 
 @Getter
 public final class Main extends JavaPlugin {
     @Getter
     private static Main instance;
-
-    public static HashMap<String, String> sumo = new HashMap<>();
-    public static ArrayList<UUID> ingame = new ArrayList<>();
 
     private void registerConfig() {
         getConfig().options().copyDefaults(true);

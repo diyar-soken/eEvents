@@ -43,4 +43,18 @@ public class SumoLocations {
         World world = Bukkit.getWorld(worldname);
         return new Location(world, x, y, z);
     }
+
+    public static Location getSpawnPointLocation(int spawnLocation){
+        String worldName;
+        int x,y,z;
+
+        worldName = Main.getInstance().getConfig().getString("Sumo." + spawnLocation + ".world");
+        x = Main.getInstance().getConfig().getInt("Sumo." + spawnLocation + ".x");
+        y = Main.getInstance().getConfig().getInt("Sumo." + spawnLocation + ".y");
+        z = Main.getInstance().getConfig().getInt("Sumo." + spawnLocation + ".z");
+
+        World world = Bukkit.getWorld(worldName);
+
+        return new Location(world, x, y, z);
+    }
 }
