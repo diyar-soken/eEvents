@@ -26,9 +26,9 @@ public class SumoStart {
 
     public static void startTournament(Player player){
         if(!isTournamentStarted()){
+            changeState(LOBBY);
             addHostertoList(player);
             addPlayerInTournament(player);
-            changeState(LOBBY);
             countdownMessage();
         }
         else{
@@ -38,6 +38,7 @@ public class SumoStart {
 
     public static void startedTournament(){
         if(!inGame.isEmpty()){
+            changeState(IN_GAME);
             for (UUID uuid : inGame) {
                 Player player = Bukkit.getPlayer(uuid);
                 Location loc = getLobbyLocation();
@@ -66,14 +67,12 @@ public class SumoStart {
             int times = Main.getInstance().getConfig().getInt("time");
             @Override
             public void run(){
-                if (times == 0) {
+                if (times == 0 && getTournamentSize()>2) {
                     broadcastMessageTime(times);
+                    startedTournament();
                 }
                 else if(times%5==0){
                     broadcastMessageTime(times);
-                }
-                else if(getTournamentSize()>2){
-                    startedTournament();
                 }
                 else{
                     broadcastMessage("not-enough-players");
@@ -84,8 +83,8 @@ public class SumoStart {
         }, 0L, 20L);
     }
 
-    public static String broadcastMessageTime(int time){
-        return Main.getInstance().getConfig().getString("broadcast-time").replace("&", "§").replace("%host%", getHoster().getName()).replace("%time%", String.valueOf(time));
+    public static void broadcastMessageTime(int time){
+        Bukkit.broadcastMessage(Main.getInstance().getConfig().getString("broadcast-time").replace("&", "§").replace("%host%", getHoster().getName()).replace("%time%", String.valueOf(time)));
     }
 
     public static String broadcastMessage(String path){
