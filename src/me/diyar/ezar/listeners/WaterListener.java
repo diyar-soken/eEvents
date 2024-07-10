@@ -1,14 +1,9 @@
 package me.diyar.ezar.listeners;
 
-import me.diyar.ezar.Main;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
 
-import java.util.UUID;
+import static me.diyar.ezar.utils.MatchState.changeState;
+import static me.diyar.ezar.utils.MatchState.state.END;
 
 public class WaterListener implements Listener {
 

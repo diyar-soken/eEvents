@@ -1,15 +1,15 @@
 package me.diyar.ezar.handlers;
 
-import me.diyar.ezar.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 import static me.diyar.ezar.Main.inGame;
+import static me.diyar.ezar.utils.MatchState.changeState;
+import static me.diyar.ezar.utils.MatchState.state.END;
 
 public class SumoHandler {
     public static UUID hoster;
@@ -42,5 +42,15 @@ public class SumoHandler {
 
     public static UUID randomPlayer() {
         return inGame.get(ThreadLocalRandom.current().nextInt(0, getTournamentSize()));
+    }
+
+    public static void resetPlayerInTournament(){
+        inGame.clear();
+    }
+
+    public static void cancelTournament(){
+        inGame.clear();
+        hoster = null;
+        changeState(END);
     }
 }

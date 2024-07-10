@@ -11,13 +11,14 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import static me.diyar.ezar.events.SumoStart.startTournament;
-import static me.diyar.ezar.handlers.SumoHandler.addPlayerInTournament;
-import static me.diyar.ezar.handlers.SumoHandler.isInTournament;
+import static me.diyar.ezar.handlers.SumoHandler.*;
+import static me.diyar.ezar.handlers.SumoLocations.isLocationSet;
 import static me.diyar.ezar.handlers.SumoLocations.lobbyPoint;
+import static me.diyar.ezar.utils.MatchState.*;
 import static me.diyar.ezar.utils.MatchState.state.IN_GAME;
 import static me.diyar.ezar.utils.MatchState.state.LOBBY;
-import static me.diyar.ezar.utils.MatchState.verifyState;
 import static me.diyar.ezar.utils.MessagesUtil.printListMessages;
+import static me.diyar.ezar.utils.MessagesUtil.printMessage;
 import static me.diyar.ezar.utils.PermissionUtils.adminpermission;
 import static me.diyar.ezar.utils.PermissionUtils.hostpermission;
 
@@ -35,41 +36,51 @@ public class SumoCommand extends Command {
             if(args.length == 1) {
                 if (args[0].equalsIgnoreCase("reload")) {
                     Main.getInstance().reloadConfig();
-                    player.sendMessage(MessagesUtil.printMessage("reload"));
+                    player.sendMessage(printMessage("reload"));
                 }
                 else if(args[0].equalsIgnoreCase("join")) {
                     if(verifyState(LOBBY)){
                         if(!isInTournament(player)){
                             addPlayerInTournament(player);
-                            player.sendMessage(MessagesUtil.printMessage("joining"));
+                            player.sendMessage(printMessage("joining"));
                         }
                         else{
-                            player.sendMessage(MessagesUtil.printMessage("alreadyin"));
+                            player.sendMessage(printMessage("alreadyin"));
                         }
                     }
                     else if(verifyState(IN_GAME)){
-                        player.sendMessage(MessagesUtil.printMessage("in-game"));
+                        player.sendMessage(printMessage("in-game"));
                     }
                     else{
-                        player.sendMessage(MessagesUtil.printMessage("noevent"));
+                        player.sendMessage(printMessage("noevent"));
                     }
                 }
                 else if(args[0].equalsIgnoreCase("host")) {
                     if(player.hasPermission(hostpermission)){
-                        startTournament(player);
+                        if(isLocationSet()){
+                            startTournament(player);
+                        }
+                        else{
+                            player.sendMessage(printMessage("nospawnpointset"));
+                        }
                     }
                     else{
-                        player.sendMessage(MessagesUtil.printMessage("host-permission-message"));
+                        player.sendMessage(printMessage("host-permission-message"));
                     }
                 }
                 else if(args[0].equalsIgnoreCase("setlobby")) {
                     if(player.hasPermission(adminpermission)){
                         lobbyPoint(playerLocation);
-                        player.sendMessage(MessagesUtil.printMessage("setlobby"));
+                        player.sendMessage(printMessage("setlobby"));
                     }
                     else{
-                        player.sendMessage(MessagesUtil.printMessage("noperms"));
+                        player.sendMessage(printMessage("noperms"));
                     }
+                }
+                else if(args[0].equalsIgnoreCase("test")){
+                    player.sendMessage(String.valueOf(getTournamentSize()));
+                    player.sendMessage(getState());
+                    player.sendMessage(String.valueOf(isTournamentStarted()));
                 }
                 else{
                     if(player.hasPermission(adminpermission)){
@@ -85,18 +96,18 @@ public class SumoCommand extends Command {
                     if(player.hasPermission(adminpermission)){
                         if(args[1].equalsIgnoreCase("1")){
                             SumoLocations.spawnPoints(playerLocation, Integer.parseInt(args[1]));
-                            player.sendMessage(MessagesUtil.printMessage("spawnpoint1"));
+                            player.sendMessage(printMessage("spawnpoint1"));
                         }
                         else if(args[1].equalsIgnoreCase("2")){
                             SumoLocations.spawnPoints(playerLocation, Integer.parseInt(args[1]));
-                            player.sendMessage(MessagesUtil.printMessage("spawnpoint1"));
+                            player.sendMessage(printMessage("spawnpoint2"));
                         }
                         else{
                             printListMessages("admin-help-command", player);
                         }
                     }
                     else{
-                        player.sendMessage(MessagesUtil.printMessage("noperms"));
+                        player.sendMessage(printMessage("noperms"));
                     }
                 }
                 else{
@@ -104,7 +115,7 @@ public class SumoCommand extends Command {
                         printListMessages("admin-help-command", player);
                     }
                     else{
-                        player.sendMessage(MessagesUtil.printMessage("noperms"));
+                        player.sendMessage(printMessage("noperms"));
                     }
                 }
             }

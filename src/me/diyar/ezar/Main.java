@@ -3,6 +3,7 @@ package me.diyar.ezar;
 import lombok.Getter;
 import me.diyar.ezar.commands.SumoCommand;
 import me.diyar.ezar.listeners.WaterListener;
+import me.diyar.ezar.utils.MatchState;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
+
+import static me.diyar.ezar.utils.MatchState.changeState;
 
 @Getter
 public final class Main extends JavaPlugin {
@@ -33,6 +36,7 @@ public final class Main extends JavaPlugin {
         registerConfig();
         registerCommands();
         registerListeners();
+        changeState(MatchState.state.END);
     }
 
     @Override

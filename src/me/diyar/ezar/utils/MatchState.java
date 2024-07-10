@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 import static me.diyar.ezar.Main.EventState;
 import static me.diyar.ezar.utils.MatchState.state.IN_GAME;
+import static me.diyar.ezar.utils.MatchState.state.LOBBY;
 
 public class MatchState {
 
@@ -12,11 +13,11 @@ public class MatchState {
     }
 
     public static void changeState(state newState){
-        EventState.put("Sumo", newState.toString());
+        EventState.put("Sumo", String.valueOf(newState));
     }
 
     public static boolean verifyState(state state){
-        return EventState.containsKey(state.toString());
+        return getState().equalsIgnoreCase(String.valueOf(state));
     }
 
     public static String getState(){
@@ -24,7 +25,7 @@ public class MatchState {
     }
 
     public static boolean isTournamentStarted(){
-        if (verifyState(state.LOBBY) || verifyState(IN_GAME)) {
+        if(getState().equalsIgnoreCase(String.valueOf(LOBBY)) || getState().equalsIgnoreCase(String.valueOf(IN_GAME))){
             return true;
         }
         return false;

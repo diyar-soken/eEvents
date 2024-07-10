@@ -1,22 +1,19 @@
 package me.diyar.ezar.events;
 
 import me.diyar.ezar.Main;
-import me.diyar.ezar.utils.MatchState;
+import me.diyar.ezar.utils.CountdownTimer;
 import me.diyar.ezar.utils.MessagesUtil;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.*;
 
 import static me.diyar.ezar.Main.inGame;
 import static me.diyar.ezar.handlers.SumoHandler.*;
 import static me.diyar.ezar.handlers.SumoLocations.getLobbyLocation;
 import static me.diyar.ezar.handlers.SumoLocations.getSpawnPointLocation;
+import static me.diyar.ezar.utils.ClickableMessage.sendClickableCommand;
 import static me.diyar.ezar.utils.MatchState.changeState;
 import static me.diyar.ezar.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezar.utils.MatchState.state.*;
@@ -29,7 +26,7 @@ public class SumoStart {
             changeState(LOBBY);
             addHostertoList(player);
             addPlayerInTournament(player);
-            countdownMessage();
+            countdown();
         }
         else{
             player.sendMessage(MessagesUtil.printMessage("already-on"));
@@ -46,6 +43,9 @@ public class SumoStart {
 
             Player randomPlayer1 = Bukkit.getPlayer(randomPlayer());
             Player randomPlayer2 = Bukkit.getPlayer(randomPlayer());
+            while(randomPlayer1 == randomPlayer2){
+                randomPlayer2 = Bukkit.getPlayer(randomPlayer());
+            }
             Location position1 = getSpawnPointLocation(1);
             Location position2 = getSpawnPointLocation(2);
             randomPlayer1.teleport(position1);
@@ -58,36 +58,39 @@ public class SumoStart {
         }
     }
 
-    public static void countdownMessage(){
-        broadcastMessageTime(Main.getInstance().getConfig().getInt("time"));
-        Bukkit.getScheduler().runTaskTimer(Main.getInstance(), new Runnable()
-        {
-            int times = Main.getInstance().getConfig().getInt("time");
-            @Override
-            public void run(){
-                if (times == 0 && getTournamentSize()>2) {
-                    broadcastMessageTime(times);
-                    changeState(IN_GAME);
-                    startedTournament();
+    public static void countdown(){
+        CountdownTimer timer = new CountdownTimer(Main.getInstance(),
+                Main.getInstance().getConfig().getInt("time"),
+                () -> broadcastMessageTime(Main.getInstance().getConfig().getInt("time")),
+                () -> {
+                    if (getTournamentSize()>=2) {
+                        changeState(IN_GAME);
+                        startedTournament();
+                    }
+                    else{
+                        broadcastMessage("not-enough-players");
+                        cancelTournament();
+                    }
+                },
+                (t) -> {
+                    List<Integer> list = Main.getInstance().getConfig().getIntegerList("times");
+
+                    if(list.contains(t.getSecondsLeft())){
+                        broadcastMessageTime(t.getSecondsLeft());
+                    }
                 }
-                else if(times%5==0){
-                    broadcastMessageTime(times);
-                }
-                else{
-                    broadcastMessage("not-enough-players");
-                    changeState(END);
-                }
-                times--;
-            }
-        }, 0L, 20L);
+
+        );
+
+        timer.scheduleTimer();
     }
 
     public static void broadcastMessageTime(int time){
-        Bukkit.broadcastMessage(Main.getInstance().getConfig().getString("broadcast-time").replace("&", "§").replace("%host%", getHoster().getName()).replace("%time%", String.valueOf(time)));
+        Bukkit.broadcastMessage(Main.getInstance().getConfig().getString("broadcast-time").replace("&", "§").replace("%host%", getHoster().getName()).replace("%time%", String.valueOf(time)).replace("%join%", "/sumo join"));
     }
 
-    public static String broadcastMessage(String path){
-        return Main.getInstance().getConfig().getString(path).replace("&", "§");
+    public static void broadcastMessage(String path){
+        Bukkit.broadcastMessage(Main.getInstance().getConfig().getString(path).replace("&", "§"));
     }
 
     public static void matchStartedMessage(String path, Player player1, Player player2, Player players){

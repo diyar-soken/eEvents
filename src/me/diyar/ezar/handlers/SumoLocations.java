@@ -7,6 +7,14 @@ import org.bukkit.World;
 
 public class SumoLocations {
 
+    public static boolean isLocationSet(){
+        if(Main.getInstance().getConfig().getString("Sumo") == null || Main.getInstance().getConfig().getString("Lobby") == null){
+            return false;
+        }
+
+        return true;
+    }
+
     public static void spawnPoints(Location location, int spawnLocation){
         int x,y,z;
         String world = location.getWorld().getName();
