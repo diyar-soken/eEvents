@@ -60,8 +60,7 @@ public class SumoStart {
     }
 
     public static void countdownMessage(){
-        int time = Main.getInstance().getConfig().getInt("time");
-        broadcastMessageTime(time);
+        broadcastMessageTime(Main.getInstance().getConfig().getInt("time"));
         Bukkit.getScheduler().runTaskTimer(Main.getInstance(), new Runnable()
         {
             int times = Main.getInstance().getConfig().getInt("time");
