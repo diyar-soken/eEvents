@@ -8,10 +8,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.UUID;
 
 @Getter
 public final class Main extends JavaPlugin {
+
+    public static HashMap<String, String> EventState = new HashMap<>();
+    public static ArrayList<UUID> inGame = new ArrayList<>();
+
     @Getter
     private static Main instance;
 

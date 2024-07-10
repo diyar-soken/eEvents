@@ -2,6 +2,7 @@ package me.diyar.ezar.events;
 
 import me.diyar.ezar.Main;
 import me.diyar.ezar.utils.MatchState;
+import me.diyar.ezar.utils.MessagesUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -12,6 +13,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static me.diyar.ezar.Main.inGame;
 import static me.diyar.ezar.handlers.SumoHandler.*;
 import static me.diyar.ezar.handlers.SumoLocations.getLobbyLocation;
 import static me.diyar.ezar.handlers.SumoLocations.getSpawnPointLocation;
@@ -24,12 +26,13 @@ public class SumoStart {
 
     public static void startTournament(Player player){
         if(!isTournamentStarted()){
-            changeState(LOBBY);
             addHostertoList(player);
+            addPlayerInTournament(player);
+            changeState(LOBBY);
             countdownMessage();
         }
         else{
-            player.sendMessage(printMessage("alreadyon"));
+            player.sendMessage(MessagesUtil.printMessage("already-on"));
         }
     }
 
@@ -57,25 +60,40 @@ public class SumoStart {
 
     public static void countdownMessage(){
         int time = Main.getInstance().getConfig().getInt("time");
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(Main.getInstance(), new Runnable() {
-            public void run() {
-                if(time%5==0){
-                    broadcastMessage(time);
+        broadcastMessageTime(time);
+        Bukkit.getScheduler().runTaskTimer(Main.getInstance(), new Runnable()
+        {
+            int times = Main.getInstance().getConfig().getInt("time");
+            @Override
+            public void run(){
+                if (times == 0) {
+                    broadcastMessageTime(times);
+                }
+                else if(times%5==0){
+                    broadcastMessageTime(times);
                 }
                 else if(getTournamentSize()>2){
-                    changeState(IN_GAME);
                     startedTournament();
                 }
+                else{
+                    broadcastMessage("not-enough-players");
+                    changeState(END);
+                }
+                times--;
             }
-        },  20L*time);
+        }, 0L, 20L);
     }
 
-    public static String broadcastMessage(int time){
+    public static String broadcastMessageTime(int time){
         return Main.getInstance().getConfig().getString("broadcast-time").replace("&", "§").replace("%host%", getHoster().getName()).replace("%time%", String.valueOf(time));
     }
 
+    public static String broadcastMessage(String path){
+        return Main.getInstance().getConfig().getString(path).replace("&", "§");
+    }
+
     public static void matchStartedMessage(String path, Player player1, Player player2, Player players){
-        List<String> list = Collections.singletonList(Main.getInstance().getConfig().getString(path));
+        List<String> list = Main.getInstance().getConfig().getStringList(path);
 
         for (String Messages : list) {
             players.sendMessage(Messages.replace("&", "§").replace("%player1%", player1.getName()).replace("%player2%", player2.getName()));

@@ -9,8 +9,9 @@ import java.util.ArrayList;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static me.diyar.ezar.Main.inGame;
+
 public class SumoHandler {
-    public static ArrayList<UUID> inGame = new ArrayList<>();
     public static UUID hoster;
 
     public static boolean isInTournament(Player player){

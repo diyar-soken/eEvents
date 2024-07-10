@@ -10,12 +10,9 @@ import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.UUID;
 
-import static me.diyar.ezar.utils.MatchState.state.END;
-import static me.diyar.ezar.utils.MatchState.state.INGAME;
-
 public class WaterListener implements Listener {
 
-    @EventHandler
+    /*@EventHandler
     public void waterTouch(PlayerMoveEvent event) {
         Material b = event.getPlayer().getLocation().getBlock().getType();
         if((b == Material.WATER || b == Material.STATIONARY_WATER) && Main.ingame.contains(event.getPlayer().getUniqueId()) && Main.sumo.containsValue(INGAME)){
@@ -30,4 +27,6 @@ public class WaterListener implements Listener {
             }
         }
     }
+
+     */
 }

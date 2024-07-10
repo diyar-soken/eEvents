@@ -3,6 +3,7 @@ package me.diyar.ezar.commands;
 import me.diyar.ezar.Main;
 import me.diyar.ezar.events.SumoStart;
 import me.diyar.ezar.handlers.SumoLocations;
+import me.diyar.ezar.utils.MatchState;
 import me.diyar.ezar.utils.MessagesUtil;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -13,6 +14,8 @@ import static me.diyar.ezar.events.SumoStart.startTournament;
 import static me.diyar.ezar.handlers.SumoHandler.addPlayerInTournament;
 import static me.diyar.ezar.handlers.SumoHandler.isInTournament;
 import static me.diyar.ezar.handlers.SumoLocations.lobbyPoint;
+import static me.diyar.ezar.utils.MatchState.state.IN_GAME;
+import static me.diyar.ezar.utils.MatchState.state.LOBBY;
 import static me.diyar.ezar.utils.MatchState.verifyState;
 import static me.diyar.ezar.utils.MessagesUtil.printListMessages;
 import static me.diyar.ezar.utils.PermissionUtils.adminpermission;
@@ -35,7 +38,7 @@ public class SumoCommand extends Command {
                     player.sendMessage(MessagesUtil.printMessage("reload"));
                 }
                 else if(args[0].equalsIgnoreCase("join")) {
-                    if(verifyState("LOBBY")){
+                    if(verifyState(LOBBY)){
                         if(!isInTournament(player)){
                             addPlayerInTournament(player);
                             player.sendMessage(MessagesUtil.printMessage("joining"));
@@ -44,7 +47,7 @@ public class SumoCommand extends Command {
                             player.sendMessage(MessagesUtil.printMessage("alreadyin"));
                         }
                     }
-                    else if(verifyState("IN_GAME")){
+                    else if(verifyState(IN_GAME)){
                         player.sendMessage(MessagesUtil.printMessage("in-game"));
                     }
                     else{
