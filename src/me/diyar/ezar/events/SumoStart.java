@@ -38,7 +38,6 @@ public class SumoStart {
 
     public static void startedTournament(){
         if(!inGame.isEmpty()){
-            changeState(IN_GAME);
             for (UUID uuid : inGame) {
                 Player player = Bukkit.getPlayer(uuid);
                 Location loc = getLobbyLocation();
@@ -68,6 +67,7 @@ public class SumoStart {
             public void run(){
                 if (times == 0 && getTournamentSize()>2) {
                     broadcastMessageTime(times);
+                    changeState(IN_GAME);
                     startedTournament();
                 }
                 else if(times%5==0){
