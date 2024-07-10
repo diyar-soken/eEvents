@@ -39,7 +39,7 @@ public class SumoCommand extends Command {
                             player.sendMessage(PrintListMessages.printMessage("alreadyin"));
                         }
                     }
-                    else if(Main.sumo.containsValue("IN_GAMEE")){
+                    else if(Main.sumo.containsValue("IN_GAME")){
                         player.sendMessage(PrintListMessages.printMessage("in-game"));
                     }
                     else{
