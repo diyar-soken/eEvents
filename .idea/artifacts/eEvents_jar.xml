@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="eEvents:jar">
+    <output-path>$PROJECT_DIR$/../kitpvp/plugins</output-path>
+    <root id="archive" name="eEvents.jar">
+      <element id="module-output" name="eEvents" />
+    </root>
+  </artifact>
+</component>

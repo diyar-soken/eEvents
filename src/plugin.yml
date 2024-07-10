@@ -1,0 +1,5 @@
+name: eEvents
+version: b0.0.1
+author: Diyar
+main: me.diyar.ezar.Main
+description: Event plugin for Ezar Network
