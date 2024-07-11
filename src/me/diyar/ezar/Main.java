@@ -2,7 +2,7 @@ package me.diyar.ezar;
 
 import lombok.Getter;
 import me.diyar.ezar.commands.SumoCommand;
-import me.diyar.ezar.listeners.WaterListener;
+import me.diyar.ezar.listeners.listener;
 import me.diyar.ezar.utils.MatchState;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bukkit.Bukkit;
@@ -49,7 +49,7 @@ public final class Main extends JavaPlugin {
     }
 
     private void registerListeners(){
-        Bukkit.getPluginManager().registerEvents(new WaterListener(), this);
+        Bukkit.getPluginManager().registerEvents(new listener(), this);
     }
 
     private void registerCommands(){

@@ -3,8 +3,7 @@ package me.diyar.ezar.utils;
 import java.util.HashMap;
 
 import static me.diyar.ezar.Main.EventState;
-import static me.diyar.ezar.utils.MatchState.state.IN_GAME;
-import static me.diyar.ezar.utils.MatchState.state.LOBBY;
+import static me.diyar.ezar.utils.MatchState.state.*;
 
 public class MatchState {
 
