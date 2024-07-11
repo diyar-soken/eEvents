@@ -3,7 +3,10 @@ package me.diyar.ezar.handlers;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
 
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -14,6 +17,7 @@ import static me.diyar.ezar.utils.MatchState.state.END;
 
 public class SumoHandler {
     public static UUID hoster;
+    public static HashMap<Player, ItemStack[]> itemhash = new HashMap<Player, ItemStack[]>();
 
     public static boolean isInTournament(Player player){
         return inGame.contains(player.getUniqueId());
@@ -21,12 +25,15 @@ public class SumoHandler {
 
     public static void addPlayerInTournament(Player player){
         inGame.add(player.getUniqueId());
+        memorizeInventory(player);
+        player.getInventory().clear();
         Location loc = SumoLocations.getLobbyLocation();
         player.teleport(loc);
     }
 
     public static void removePlayerInTournament(Player player){
         inGame.remove(player.getUniqueId());
+        restoreInventory(player);
         Location loc = SumoLocations.getLobbyLocation();
         player.teleport(loc);
     }
@@ -45,6 +52,23 @@ public class SumoHandler {
 
     public static UUID randomPlayer() {
         return inGame.get(ThreadLocalRandom.current().nextInt(0, getTournamentSize()));
+    }
+
+    public static void memorizeInventory(Player player){
+        ItemStack[] playerinv = player.getInventory().getContents();
+        itemhash.put(player, playerinv);
+    }
+
+    public static void restoreInventory(Player player){
+        if(itemhash.containsKey(player)){
+            ItemStack[] items = itemhash.get(player);
+            PlayerInventory inv = player.getInventory();
+            for(ItemStack item : items){
+                if(item != null) {
+                    player.getInventory().addItem(item);
+                }
+            }
+        }
     }
 
     public static void sendMessageToTournament(String message){
@@ -67,6 +91,11 @@ public class SumoHandler {
     }
 
     public static void cancelTournament(){
+        for (UUID uuid : inGame) {
+            Player player = Bukkit.getPlayer(uuid);
+            restoreInventory(player);
+            player.teleport(getLobbyLocation());
+        }
         inGame.clear();
         hoster = null;
         changeState(END);
