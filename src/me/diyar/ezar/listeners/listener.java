@@ -58,20 +58,12 @@ public class listener implements Listener {
     public void onPlayerInMatchMoveEvent(PlayerMoveEvent event){
         Player player = event.getPlayer();
         if(isInTournament(player)){
-            if(isInMatch(player)){
-                CountdownTimer timer = new CountdownTimer(Main.getInstance(), 3,
-                        () -> sendMessageToTournament("§eMatch starting.."),
-                        () -> sendMessageToTournament("§eMatch Started"),
-                        (t) -> {
-                            sendMessageToTournament("§e" + String.valueOf(t.getSecondsLeft()));
-                            Location to = event.getTo();
-                            Location from = event.getFrom();
-                            if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
-                                player.teleport(from);
-                            }
-                        }
-                );
-                timer.scheduleTimer();
+            while(isInMatch(player)){
+                Location to = event.getTo();
+                Location from = event.getFrom();
+                if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
+                    player.teleport(from);
+                }
             }
         }
     }

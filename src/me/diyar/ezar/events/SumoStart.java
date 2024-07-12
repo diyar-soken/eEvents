@@ -49,6 +49,7 @@ public class SumoStart {
             }
 
             addPlayerInMatch(randomPlayer1,randomPlayer2);
+            countdownMatch(randomPlayer1,randomPlayer2);
 
             for (UUID uuid : inGame) {
                 Player players = Bukkit.getPlayer(uuid);
@@ -84,16 +85,17 @@ public class SumoStart {
         timer.scheduleTimer();
     }
 
-    public static void countdownMatch(){
+    public static void countdownMatch(Player player1, Player player2){
         CountdownTimer timer = new CountdownTimer(Main.getInstance(), 3,
                 () -> {
                     sendMessageToTournament("§eMatch starting..");
                 },
                 () -> {
+                    addPlayerFighting(player1,player2);
                     sendMessageToTournament("§eMatch Started");
                 },
                 (t) -> {
-                    sendMessageToTournament("§e" + String.valueOf(t.getSecondsLeft()));
+                    broadcastMessageTime(t.getSecondsLeft());
                 }
 
         );

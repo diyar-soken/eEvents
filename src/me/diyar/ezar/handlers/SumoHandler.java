@@ -13,8 +13,7 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static me.diyar.ezar.Main.fighting;
-import static me.diyar.ezar.Main.inGame;
+import static me.diyar.ezar.Main.*;
 import static me.diyar.ezar.handlers.SumoLocations.getLobbyLocation;
 import static me.diyar.ezar.handlers.SumoLocations.getSpawnPointLocation;
 import static me.diyar.ezar.utils.MatchState.changeState;
@@ -45,15 +44,15 @@ public class SumoHandler {
     }
 
     public static boolean isInMatch(Player player){
-        if(fighting.contains(player.getUniqueId())){
+        if(inMatch.contains(player.getUniqueId())){
             return true;
         }
         return false;
     }
 
     public static void addPlayerInMatch(Player player, Player player2){
-        fighting.add(player.getUniqueId());
-        fighting.add(player2.getUniqueId());
+        inMatch.add(player.getUniqueId());
+        inMatch.add(player2.getUniqueId());
         Location position1 = getSpawnPointLocation(1);
         Location position2 = getSpawnPointLocation(2);
         player.getInventory().clear();
@@ -63,7 +62,7 @@ public class SumoHandler {
     }
 
     public static void removePlayerInMatch(Player player){
-        fighting.remove(player.getUniqueId());
+        inMatch.remove(player.getUniqueId());
         Location loc = SumoLocations.getLobbyLocation();
         player.teleport(loc);
         giveTournamentInventory(player);
@@ -71,13 +70,26 @@ public class SumoHandler {
 
     public static Player getPlayerInMatch(){
         Player player = null;
-        for(UUID players : fighting){
+        for(UUID players : inMatch){
             player = Bukkit.getPlayer(players);
         }
         return player;
     }
 
     public static void resetPlayerInMatch(){
+        inMatch.clear();
+    }
+
+    public static void addPlayerFighting(Player player, Player player1){
+        fighting.add(player.getUniqueId());
+        fighting.add(player1.getUniqueId());
+    }
+
+    public static boolean isFighting(Player player){
+        return fighting.contains(player.getUniqueId());
+    }
+
+    public static void clearPlayerFighting(Player player){
         fighting.clear();
     }
 
@@ -103,7 +115,8 @@ public class SumoHandler {
         ItemStack leaveEvent = new ItemStack(Material.NETHER_STAR, 1);
         ItemMeta leaveEventMeta = leaveEvent.getItemMeta();
         leaveEventMeta.setDisplayName(printMessage("leaveitem"));
-        playerInventory.setItem(Main.getInstance().getConfig().getInt("leaveitem-position"),leaveEvent);
+        leaveEvent.setItemMeta(leaveEventMeta);
+        playerInventory.setItem(Main.getInstance().getConfig().getInt("leaveitem-position")-1,leaveEvent);
     }
 
     public static void memorizeInventory(Player player){
@@ -128,10 +141,6 @@ public class SumoHandler {
             Player player = Bukkit.getPlayer(uuid);
             player.sendMessage(message);
         }
-    }
-
-    public static void resetPlayerInTournament(){
-        inGame.clear();
     }
 
     public static Player winner(){

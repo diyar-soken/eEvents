@@ -78,10 +78,11 @@ public class SumoCommand extends Command {
                     }
                 }
                 else if(args[0].equalsIgnoreCase("test")){
-                    player.sendMessage(String.valueOf(getTournamentSize()));
-                    player.sendMessage(getState());
-                    player.sendMessage(String.valueOf(isTournamentStarted()));
-                    player.sendMessage(String.valueOf(isInMatch(player)));
+                    player.sendMessage("Giocatori nel torneo: " + String.valueOf(getTournamentSize()));
+                    player.sendMessage("Stato torneo: " + getState());
+                    player.sendMessage("Torneo iniziato: " + String.valueOf(isTournamentStarted()));
+                    player.sendMessage("In parita: " + String.valueOf(isInMatch(player)));
+                    player.sendMessage("Combattendo: " + String.valueOf(isFighting(player)));
                 }
                 else{
                     if(player.hasPermission(adminpermission)){
