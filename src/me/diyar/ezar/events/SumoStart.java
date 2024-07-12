@@ -6,6 +6,7 @@ import me.diyar.ezar.utils.MessagesUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import java.util.*;
 
@@ -47,9 +48,10 @@ public class SumoStart {
                 randomPlayer2 = Bukkit.getPlayer(randomPlayer());
             }
 
+            addPlayerInMatch(randomPlayer1,randomPlayer2);
+
             for (UUID uuid : inGame) {
                 Player players = Bukkit.getPlayer(uuid);
-                countdownMatch();
                 matchStartedMessage("match-started",randomPlayer1,randomPlayer2,players);
             }
         }
@@ -84,8 +86,12 @@ public class SumoStart {
 
     public static void countdownMatch(){
         CountdownTimer timer = new CountdownTimer(Main.getInstance(), 3,
-                () -> {},
-                () -> {},
+                () -> {
+                    sendMessageToTournament("§eMatch starting..");
+                },
+                () -> {
+                    sendMessageToTournament("§eMatch Started");
+                },
                 (t) -> {
                     sendMessageToTournament("§e" + String.valueOf(t.getSecondsLeft()));
                 }

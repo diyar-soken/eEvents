@@ -57,6 +57,7 @@ public class SumoHandler {
         Location position1 = getSpawnPointLocation(1);
         Location position2 = getSpawnPointLocation(2);
         player.getInventory().clear();
+        player2.getInventory().clear();
         player.teleport(position1);
         player2.teleport(position2);
     }

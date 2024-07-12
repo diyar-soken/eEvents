@@ -1,7 +1,10 @@
 package me.diyar.ezar.listeners;
 
+import me.diyar.ezar.Main;
+import me.diyar.ezar.utils.CountdownTimer;
 import me.diyar.ezar.utils.MessagesUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -12,6 +15,7 @@ import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
+import static me.diyar.ezar.events.SumoStart.countdownMatch;
 import static me.diyar.ezar.handlers.SumoHandler.*;
 import static me.diyar.ezar.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezar.utils.MessagesUtil.printMessage;
@@ -47,6 +51,28 @@ public class listener implements Listener {
         Player player = (Player) event.getWhoClicked();
         if(isInTournament(player)){
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPlayerInMatchMoveEvent(PlayerMoveEvent event){
+        Player player = event.getPlayer();
+        if(isInTournament(player)){
+            if(isInMatch(player)){
+                CountdownTimer timer = new CountdownTimer(Main.getInstance(), 3,
+                        () -> sendMessageToTournament("§eMatch starting.."),
+                        () -> sendMessageToTournament("§eMatch Started"),
+                        (t) -> {
+                            sendMessageToTournament("§e" + String.valueOf(t.getSecondsLeft()));
+                            Location to = event.getTo();
+                            Location from = event.getFrom();
+                            if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
+                                player.teleport(from);
+                            }
+                        }
+                );
+                timer.scheduleTimer();
+            }
         }
     }
 }

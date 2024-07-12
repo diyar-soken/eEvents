@@ -81,6 +81,7 @@ public class SumoCommand extends Command {
                     player.sendMessage(String.valueOf(getTournamentSize()));
                     player.sendMessage(getState());
                     player.sendMessage(String.valueOf(isTournamentStarted()));
+                    player.sendMessage(String.valueOf(isInMatch(player)));
                 }
                 else{
                     if(player.hasPermission(adminpermission)){
