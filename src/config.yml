@@ -16,6 +16,8 @@ winner: "%winner% has just won the tournament."
 joining: "&aJoining the sumo event.."
 in-game: "&eThe event is started."
 not-enough-players: "&cNo enough players in the event."
+leaveitem: "&cLeave event (&7Left click)"
+leaveitem-position: 9
 time: 60
 times: [45, 30, 15, 10, 5, 4, 3, 2, 1]
 broadcast-time: "&9%host% &eStarted &aSumo &eevent is going to begun in &b%time%s &7Type %join%"

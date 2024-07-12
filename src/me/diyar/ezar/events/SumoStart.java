@@ -46,13 +46,10 @@ public class SumoStart {
             while(randomPlayer1 == randomPlayer2){
                 randomPlayer2 = Bukkit.getPlayer(randomPlayer());
             }
-            Location position1 = getSpawnPointLocation(1);
-            Location position2 = getSpawnPointLocation(2);
-            randomPlayer1.teleport(position1);
-            randomPlayer2.teleport(position2);
 
             for (UUID uuid : inGame) {
                 Player players = Bukkit.getPlayer(uuid);
+                countdownMatch();
                 matchStartedMessage("match-started",randomPlayer1,randomPlayer2,players);
             }
         }
@@ -78,6 +75,19 @@ public class SumoStart {
                     if(list.contains(t.getSecondsLeft())){
                         broadcastMessageTime(t.getSecondsLeft());
                     }
+                }
+
+        );
+
+        timer.scheduleTimer();
+    }
+
+    public static void countdownMatch(){
+        CountdownTimer timer = new CountdownTimer(Main.getInstance(), 3,
+                () -> {},
+                () -> {},
+                (t) -> {
+                    sendMessageToTournament("§e" + String.valueOf(t.getSecondsLeft()));
                 }
 
         );

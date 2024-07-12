@@ -1,19 +1,25 @@
 package me.diyar.ezar.handlers;
 
+import me.diyar.ezar.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static me.diyar.ezar.Main.fighting;
 import static me.diyar.ezar.Main.inGame;
 import static me.diyar.ezar.handlers.SumoLocations.getLobbyLocation;
+import static me.diyar.ezar.handlers.SumoLocations.getSpawnPointLocation;
 import static me.diyar.ezar.utils.MatchState.changeState;
 import static me.diyar.ezar.utils.MatchState.state.END;
+import static me.diyar.ezar.utils.MessagesUtil.printMessage;
 
 public class SumoHandler {
     public static UUID hoster;
@@ -26,7 +32,7 @@ public class SumoHandler {
     public static void addPlayerInTournament(Player player){
         inGame.add(player.getUniqueId());
         memorizeInventory(player);
-        player.getInventory().clear();
+        giveTournamentInventory(player);
         Location loc = SumoLocations.getLobbyLocation();
         player.teleport(loc);
     }
@@ -36,6 +42,42 @@ public class SumoHandler {
         restoreInventory(player);
         Location loc = SumoLocations.getLobbyLocation();
         player.teleport(loc);
+    }
+
+    public static boolean isInMatch(Player player){
+        if(fighting.contains(player.getUniqueId())){
+            return true;
+        }
+        return false;
+    }
+
+    public static void addPlayerInMatch(Player player, Player player2){
+        fighting.add(player.getUniqueId());
+        fighting.add(player2.getUniqueId());
+        Location position1 = getSpawnPointLocation(1);
+        Location position2 = getSpawnPointLocation(2);
+        player.getInventory().clear();
+        player.teleport(position1);
+        player2.teleport(position2);
+    }
+
+    public static void removePlayerInMatch(Player player){
+        fighting.remove(player.getUniqueId());
+        Location loc = SumoLocations.getLobbyLocation();
+        player.teleport(loc);
+        giveTournamentInventory(player);
+    }
+
+    public static Player getPlayerInMatch(){
+        Player player = null;
+        for(UUID players : fighting){
+            player = Bukkit.getPlayer(players);
+        }
+        return player;
+    }
+
+    public static void resetPlayerInMatch(){
+        fighting.clear();
     }
 
     public static void addHostertoList(Player player){
@@ -52,6 +94,15 @@ public class SumoHandler {
 
     public static UUID randomPlayer() {
         return inGame.get(ThreadLocalRandom.current().nextInt(0, getTournamentSize()));
+    }
+
+    public static void giveTournamentInventory(Player player){
+        PlayerInventory playerInventory = player.getInventory();
+        playerInventory.clear();
+        ItemStack leaveEvent = new ItemStack(Material.NETHER_STAR, 1);
+        ItemMeta leaveEventMeta = leaveEvent.getItemMeta();
+        leaveEventMeta.setDisplayName(printMessage("leaveitem"));
+        playerInventory.setItem(Main.getInstance().getConfig().getInt("leaveitem-position"),leaveEvent);
     }
 
     public static void memorizeInventory(Player player){
@@ -97,6 +148,7 @@ public class SumoHandler {
             player.teleport(getLobbyLocation());
         }
         inGame.clear();
+        resetPlayerInMatch();
         hoster = null;
         changeState(END);
     }

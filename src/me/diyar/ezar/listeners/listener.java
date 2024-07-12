@@ -8,6 +8,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import static me.diyar.ezar.handlers.SumoHandler.*;
@@ -23,14 +25,17 @@ public class listener implements Listener {
 
         if(isTournamentStarted()){
             if(isInTournament(player)){
-                if(material == Material.STATIONARY_WATER || material == Material.WATER){
-                    removePlayerInTournament(player);
-                    player.sendMessage(printMessage("eliminated"));
-                    sendMessageToTournament(printMessage("broadcastElimination").replace("%player%", player.getName()));
-                    if(getTournamentSize()<2){
-                        Player winner = winner();
-                        Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
-                        cancelTournament();
+                if(isInMatch(player)){
+                    if(material == Material.STATIONARY_WATER || material == Material.WATER){
+                        removePlayerInTournament(player);
+                        player.sendMessage(printMessage("eliminated"));
+                        removePlayerInMatch(getPlayerInMatch());
+                        sendMessageToTournament(printMessage("broadcastElimination").replace("%player%", player.getName()));
+                        if(getTournamentSize()<2){
+                            Player winner = winner();
+                            Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
+                            cancelTournament();
+                        }
                     }
                 }
             }
@@ -38,10 +43,10 @@ public class listener implements Listener {
     }
 
     @EventHandler
-    public void onInventoryClickEvent(InventoryClickEvent event){
+    public void onInventoryDragEvent(InventoryDragEvent event){
         Player player = (Player) event.getWhoClicked();
         if(isInTournament(player)){
-
+            event.setCancelled(true);
         }
     }
 }
