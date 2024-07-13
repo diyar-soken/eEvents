@@ -16,7 +16,7 @@ winner: "%winner% has just won the tournament."
 joining: "&aJoining the sumo event.."
 in-game: "&eThe event is started."
 not-enough-players: "&cNo enough players in the event."
-leaveitem: "&cLeave event (&7Left click)"
+leaveitem: "&cLeave event &7(Left click)"
 leaveitem-position: 9
 time: 60
 times: [45, 30, 15, 10, 5, 4, 3, 2, 1]
@@ -26,9 +26,9 @@ admin-help-command:
   - " &7* &6/sumo setlobby &8- &fSets player lobby/spectating point"
   - " &7* &6/sumo setspawn 1/2 &8- &fSets player spawn point"
   - " "
-  - " &7* &6/sumo host 1/2 &8- &fHosts the sumo event"
+  - " &7* &6/sumo host &8- &fHosts the sumo event"
   - " &7* &6/sumo join &8- &fJoins into the sumo event"
-  - " &7* &6/sumo leave 1/2 &8- &fLeaves the sumo event"
+  - " &7* &6/sumo leave &8- &fLeaves the sumo event"
 help-command:
   - "&aSumo Help"
   - " &7* &6/sumo host &8- &fHosts the sumo event"

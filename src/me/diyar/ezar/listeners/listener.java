@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static me.diyar.ezar.events.SumoStart.startedTournament;
+import static me.diyar.ezar.events.SumoStart.startMatch;
 import static me.diyar.ezar.handlers.SumoHandler.*;
 import static me.diyar.ezar.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezar.utils.MessagesUtil.printMessage;
@@ -47,7 +47,7 @@ public class listener implements Listener {
                             cancelTournament();
                         }
                         else{
-                            startedTournament();
+                            startMatch();
                         }
                     }
                 }

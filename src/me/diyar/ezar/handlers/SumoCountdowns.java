@@ -2,10 +2,13 @@ package me.diyar.ezar.handlers;
 
 import me.diyar.ezar.Main;
 import me.diyar.ezar.utils.CountdownTimer;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
+import java.util.UUID;
 
+import static me.diyar.ezar.Main.inGame;
 import static me.diyar.ezar.events.SumoStart.*;
 import static me.diyar.ezar.handlers.SumoHandler.*;
 import static me.diyar.ezar.handlers.SumoHandler.resetPlayerInMatch;
@@ -15,14 +18,14 @@ import static me.diyar.ezar.utils.MessagesUtil.*;
 
 public class SumoCountdowns {
 
-    public static void countdown(){
+    public static void countdownTournament(){
         CountdownTimer timer = new CountdownTimer(Main.getInstance(),
                 Main.getInstance().getConfig().getInt("time"),
                 () -> broadcastMessageTime(Main.getInstance().getConfig().getInt("time")),
                 () -> {
                     if (getTournamentSize()>=2) {
                         changeState(IN_GAME);
-                        startedTournament();
+                        startMatch();
                     }
                     else{
                         broadcastMessage("not-enough-players");
@@ -42,15 +45,33 @@ public class SumoCountdowns {
         timer.scheduleTimer();
     }
 
+    public static void countdownPreMatch(Player player1, Player player2){
+        CountdownTimer timer = new CountdownTimer(Main.getInstance(), Main.getInstance().getConfig().getInt("match-countdown"),
+                () -> {},
+                () -> {
+                    for (UUID uuid : inGame) {
+                        Player players = Bukkit.getPlayer(uuid);
+                        matchStartedMessage("match-info",player1,player2,players);
+                    }
+                    addPlayerInMatch(player1,player2);
+                    countdownMatch(player1,player2);
+                },
+                (t) -> {}
+
+        );
+
+        timer.scheduleTimer();
+    }
+
     public static void countdownMatch(Player player1, Player player2){
         CountdownTimer timer = new CountdownTimer(Main.getInstance(), Main.getInstance().getConfig().getInt("match-countdown"),
                 () -> {
-                    sendMessageToTournament(printMessage("march-starting"));
+                    sendMessageToTournament(printMessage("match-starting"));
                 },
                 () -> {
                     addPlayerFighting(player1,player2);
                     resetPlayerInMatch();
-                    sendMessageToTournament(printMessage("march-started"));
+                    sendMessageToTournament(printMessage("match-started"));
                 },
                 (t) -> {
                     sendMessageToTournament(printMessage("match-countdown-color") + String.valueOf(t.getSecondsLeft()));

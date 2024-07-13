@@ -4,16 +4,12 @@ import me.diyar.ezar.utils.MessagesUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.*;
-
 import static me.diyar.ezar.Main.inGame;
-import static me.diyar.ezar.handlers.SumoCountdowns.countdown;
-import static me.diyar.ezar.handlers.SumoCountdowns.countdownMatch;
+import static me.diyar.ezar.handlers.SumoCountdowns.*;
 import static me.diyar.ezar.handlers.SumoHandler.*;
 import static me.diyar.ezar.utils.MatchState.changeState;
 import static me.diyar.ezar.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezar.utils.MatchState.state.*;
-import static me.diyar.ezar.utils.MessagesUtil.*;
 
 public class SumoStart {
 
@@ -22,14 +18,14 @@ public class SumoStart {
             changeState(LOBBY);
             addHostertoList(player);
             addPlayerInTournament(player);
-            countdown();
+            countdownTournament();
         }
         else{
             player.sendMessage(MessagesUtil.printMessage("already-on"));
         }
     }
 
-    public static void startedTournament(){
+    public static void startMatch(){
         if(!inGame.isEmpty()){
             Player randomPlayer1 = Bukkit.getPlayer(randomPlayer());
             Player randomPlayer2 = Bukkit.getPlayer(randomPlayer());
@@ -37,13 +33,7 @@ public class SumoStart {
                 randomPlayer2 = Bukkit.getPlayer(randomPlayer());
             }
 
-            addPlayerInMatch(randomPlayer1,randomPlayer2);
-            countdownMatch(randomPlayer1,randomPlayer2);
-
-            for (UUID uuid : inGame) {
-                Player players = Bukkit.getPlayer(uuid);
-                matchStartedMessage("match-info",randomPlayer1,randomPlayer2,players);
-            }
+            countdownPreMatch(randomPlayer1,randomPlayer2);
         }
     }
 }
