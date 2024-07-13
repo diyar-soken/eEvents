@@ -117,8 +117,10 @@ public class listener implements Listener {
             Player player = (Player) event.getEntity();
             if(isTournamentStarted()){
                 if(isInTournament(player)){
+                    player.setVelocity(player.getLocation().getDirection().multiply(0));
                     if(isFighting(player)){
                         event.setCancelled(false);
+
                     }
                     else if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
                         event.setCancelled(true);
