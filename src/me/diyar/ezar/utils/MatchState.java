@@ -1,7 +1,5 @@
 package me.diyar.ezar.utils;
 
-import java.util.HashMap;
-
 import static me.diyar.ezar.Main.EventState;
 import static me.diyar.ezar.utils.MatchState.state.*;
 

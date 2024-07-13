@@ -1,8 +1,5 @@
 package me.diyar.ezar.listeners;
 
-import me.diyar.ezar.Main;
-import me.diyar.ezar.utils.CountdownTimer;
-import me.diyar.ezar.utils.MessagesUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -17,16 +14,16 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static me.diyar.ezar.events.SumoStart.countdownMatch;
 import static me.diyar.ezar.events.SumoStart.startedTournament;
 import static me.diyar.ezar.handlers.SumoHandler.*;
 import static me.diyar.ezar.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezar.utils.MessagesUtil.printMessage;
+import static me.diyar.ezar.utils.MessagesUtil.sendMessageToTournament;
+import static me.diyar.ezar.utils.PermissionUtils.adminpermission;
 
 public class listener implements Listener {
 
@@ -71,7 +68,7 @@ public class listener implements Listener {
         Player player = event.getPlayer();
         if(isTournamentStarted()){
             if(isInTournament(player) || isFighting(player) || isInMatch(player)){
-                if (!player.hasPermission(printMessage("admin-permission")) || player.getGameMode() != GameMode.CREATIVE){
+                if (!player.hasPermission(adminpermission) || player.getGameMode() != GameMode.CREATIVE){
                     event.setCancelled(true);
                 }
             }
@@ -83,7 +80,7 @@ public class listener implements Listener {
         Player player = event.getPlayer();
         if(isTournamentStarted()){
             if(isInTournament(player) || isFighting(player) || isInMatch(player)){
-                if (!player.hasPermission(printMessage("admin-permission")) || player.getGameMode() != GameMode.CREATIVE){
+                if (!player.hasPermission(adminpermission) || player.getGameMode() != GameMode.CREATIVE){
                     event.setCancelled(true);
                 }
             }
@@ -150,7 +147,7 @@ public class listener implements Listener {
         Player player = (Player) event.getWhoClicked();
         if(isTournamentStarted()){
             if(isInTournament(player)){
-                if(!player.hasPermission(printMessage("admin-permission")) || !player.getGameMode().equals(GameMode.CREATIVE)){
+                if(!player.hasPermission(adminpermission) || !player.getGameMode().equals(GameMode.CREATIVE)){
                     event.setCancelled(true);
                 }
             }
@@ -162,7 +159,7 @@ public class listener implements Listener {
         Player player = event.getPlayer();
         if(isTournamentStarted()){
             if(isInTournament(player)){
-                if(!player.hasPermission(printMessage("admin-permission")) || !player.getGameMode().equals(GameMode.CREATIVE)){
+                if(!player.hasPermission(adminpermission) || !player.getGameMode().equals(GameMode.CREATIVE)){
                     event.setCancelled(true);
                 }
             }

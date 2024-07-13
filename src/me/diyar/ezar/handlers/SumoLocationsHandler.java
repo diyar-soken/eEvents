@@ -5,7 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 
-public class SumoLocations {
+public class SumoLocationsHandler {
 
     public static boolean isLocationSet(){
         if(Main.getInstance().getConfig().getString("Sumo") == null || Main.getInstance().getConfig().getString("Lobby") == null){

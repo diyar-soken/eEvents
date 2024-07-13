@@ -1,10 +1,7 @@
 package me.diyar.ezar.commands;
 
 import me.diyar.ezar.Main;
-import me.diyar.ezar.events.SumoStart;
-import me.diyar.ezar.handlers.SumoLocations;
-import me.diyar.ezar.utils.MatchState;
-import me.diyar.ezar.utils.MessagesUtil;
+import me.diyar.ezar.handlers.SumoLocationsHandler;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,8 +9,8 @@ import org.bukkit.entity.Player;
 
 import static me.diyar.ezar.events.SumoStart.startTournament;
 import static me.diyar.ezar.handlers.SumoHandler.*;
-import static me.diyar.ezar.handlers.SumoLocations.isLocationSet;
-import static me.diyar.ezar.handlers.SumoLocations.lobbyPoint;
+import static me.diyar.ezar.handlers.SumoLocationsHandler.isLocationSet;
+import static me.diyar.ezar.handlers.SumoLocationsHandler.lobbyPoint;
 import static me.diyar.ezar.utils.MatchState.*;
 import static me.diyar.ezar.utils.MatchState.state.IN_GAME;
 import static me.diyar.ezar.utils.MatchState.state.LOBBY;
@@ -97,11 +94,11 @@ public class SumoCommand extends Command {
                 if(args[0].equalsIgnoreCase("setspawn")) {
                     if(player.hasPermission(adminpermission)){
                         if(args[1].equalsIgnoreCase("1")){
-                            SumoLocations.spawnPoints(playerLocation, Integer.parseInt(args[1]));
+                            SumoLocationsHandler.spawnPoints(playerLocation, Integer.parseInt(args[1]));
                             player.sendMessage(printMessage("spawnpoint1"));
                         }
                         else if(args[1].equalsIgnoreCase("2")){
-                            SumoLocations.spawnPoints(playerLocation, Integer.parseInt(args[1]));
+                            SumoLocationsHandler.spawnPoints(playerLocation, Integer.parseInt(args[1]));
                             player.sendMessage(printMessage("spawnpoint2"));
                         }
                         else{
