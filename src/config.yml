@@ -34,10 +34,9 @@ help-command:
   - " &7* &6/sumo host &8- &fHosts the sumo event"
   - " &7* &6/sumo join &8- &fJoins into the sumo event"
 match-info:
-  - "&7&m------------------------"
-  - "&eMatch: &9%player1% &cvs &9%player2%"
-  - "&7&m------------------------"
-match-starting: "&eMatch starting.."
-match-started: "&eMatch started."
+  - "&eStartig event match. &a(%player1% vs %player2%)"
+prematch-countdown: 5
+prematch-message: "&e(Event) &7Selecting random players..."
 match-countdown: 3
-match-countdown-color: "&e"
+match-countdown-message: "&eThe match starts in &a%time%&e..."
+match-started: "&aThe match has started good luck!"

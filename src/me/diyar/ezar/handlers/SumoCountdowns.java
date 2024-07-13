@@ -46,13 +46,12 @@ public class SumoCountdowns {
     }
 
     public static void countdownPreMatch(Player player1, Player player2){
-        CountdownTimer timer = new CountdownTimer(Main.getInstance(), Main.getInstance().getConfig().getInt("match-countdown"),
-                () -> {},
+        CountdownTimer timer = new CountdownTimer(Main.getInstance(), Main.getInstance().getConfig().getInt("prematch-countdown"),
                 () -> {
-                    for (UUID uuid : inGame) {
-                        Player players = Bukkit.getPlayer(uuid);
-                        matchStartedMessage("match-info",player1,player2,players);
-                    }
+                    sendMessageToTournament(printMessage("prematch-message"));
+                },
+                () -> {
+                    matchStartedMessage("match-info",player1,player2);
                     addPlayerInMatch(player1,player2);
                     countdownMatch(player1,player2);
                 },
@@ -65,16 +64,14 @@ public class SumoCountdowns {
 
     public static void countdownMatch(Player player1, Player player2){
         CountdownTimer timer = new CountdownTimer(Main.getInstance(), Main.getInstance().getConfig().getInt("match-countdown"),
-                () -> {
-                    sendMessageToTournament(printMessage("match-starting"));
-                },
+                () -> {},
                 () -> {
                     addPlayerFighting(player1,player2);
                     resetPlayerInMatch();
-                    sendMessageToTournament(printMessage("match-started"));
+                    sendMessageToInMatch(printMessage("match-started"));
                 },
                 (t) -> {
-                    sendMessageToTournament(printMessage("match-countdown-color") + String.valueOf(t.getSecondsLeft()));
+                    sendMessageToInMatch(printMessage("match-countdown-message").replace("%time%", String.valueOf(t.getSecondsLeft())));
                 }
 
         );
