@@ -1,15 +1,15 @@
-package me.diyar.ezar.events;
+package me.diyar.ezarevents.events;
 
-import me.diyar.ezar.utils.MessagesUtil;
+import me.diyar.ezarevents.utils.MessagesUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import static me.diyar.ezar.Main.inGame;
-import static me.diyar.ezar.handlers.SumoCountdowns.*;
-import static me.diyar.ezar.handlers.SumoHandler.*;
-import static me.diyar.ezar.utils.MatchState.changeState;
-import static me.diyar.ezar.utils.MatchState.isTournamentStarted;
-import static me.diyar.ezar.utils.MatchState.state.*;
+import static me.diyar.ezarevents.Main.inGame;
+import static me.diyar.ezarevents.handlers.SumoCountdowns.*;
+import static me.diyar.ezarevents.handlers.SumoHandler.*;
+import static me.diyar.ezarevents.utils.MatchState.changeState;
+import static me.diyar.ezarevents.utils.MatchState.isTournamentStarted;
+import static me.diyar.ezarevents.utils.MatchState.state.*;
 
 public class SumoStart {
 

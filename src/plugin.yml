@@ -1,4 +1,4 @@
 name: eEvents
 version: beta
 author: Diyar
-main: me.diyar.ezar.Main
+main: me.diyar.ezarevents.Main

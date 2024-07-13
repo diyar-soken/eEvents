@@ -1,4 +1,4 @@
-package me.diyar.ezar.utils;
+package me.diyar.ezarevents.utils;
 
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;

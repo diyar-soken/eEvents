@@ -1,15 +1,15 @@
-package me.diyar.ezar.utils;
+package me.diyar.ezarevents.utils;
 
-import me.diyar.ezar.Main;
+import me.diyar.ezarevents.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
 
-import static me.diyar.ezar.Main.inGame;
-import static me.diyar.ezar.Main.inMatch;
-import static me.diyar.ezar.handlers.SumoHandler.getHoster;
+import static me.diyar.ezarevents.Main.inGame;
+import static me.diyar.ezarevents.Main.inMatch;
+import static me.diyar.ezarevents.handlers.SumoHandler.getHoster;
 
 public class MessagesUtil {
 

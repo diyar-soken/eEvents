@@ -1,4 +1,4 @@
-package me.diyar.ezar.listeners;
+package me.diyar.ezarevents.listeners;
 
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -18,12 +18,12 @@ import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import static me.diyar.ezar.events.SumoStart.startMatch;
-import static me.diyar.ezar.handlers.SumoHandler.*;
-import static me.diyar.ezar.utils.MatchState.isTournamentStarted;
-import static me.diyar.ezar.utils.MessagesUtil.printMessage;
-import static me.diyar.ezar.utils.MessagesUtil.sendMessageToTournament;
-import static me.diyar.ezar.utils.PermissionUtils.adminpermission;
+import static me.diyar.ezarevents.events.SumoStart.startMatch;
+import static me.diyar.ezarevents.handlers.SumoHandler.*;
+import static me.diyar.ezarevents.utils.MatchState.isTournamentStarted;
+import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
+import static me.diyar.ezarevents.utils.MessagesUtil.sendMessageToTournament;
+import static me.diyar.ezarevents.utils.PermissionUtils.adminpermission;
 
 public class listener implements Listener {
 
@@ -38,9 +38,10 @@ public class listener implements Listener {
                     if(material == Material.STATIONARY_WATER || material == Material.WATER){
                         removePlayerInTournament(player);
                         player.sendMessage(printMessage("eliminated"));
-                        resetPlayerInMatch();
+                        Player playerMatchWinner = getPlayerFighting();
+                        removePlayerInFight(playerMatchWinner);
                         clearPlayerFighting();
-                        sendMessageToTournament(printMessage("broadcastElimination").replace("%player%", player.getName()));
+                        sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
                         if(getTournamentSize()<2){
                             Player winner = winner();
                             Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));

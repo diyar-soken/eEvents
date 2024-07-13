@@ -1,4 +1,4 @@
-package me.diyar.ezar.handlers;
+package me.diyar.ezarevents.handlers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -7,12 +7,12 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static me.diyar.ezar.Main.*;
-import static me.diyar.ezar.handlers.SumoInventoryHandler.*;
-import static me.diyar.ezar.handlers.SumoLocationsHandler.getLobbyLocation;
-import static me.diyar.ezar.handlers.SumoLocationsHandler.getSpawnPointLocation;
-import static me.diyar.ezar.utils.MatchState.changeState;
-import static me.diyar.ezar.utils.MatchState.state.END;
+import static me.diyar.ezarevents.Main.*;
+import static me.diyar.ezarevents.handlers.SumoInventoryHandler.*;
+import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getLobbyLocation;
+import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getSpawnPointLocation;
+import static me.diyar.ezarevents.utils.MatchState.changeState;
+import static me.diyar.ezarevents.utils.MatchState.state.END;
 
 public class SumoHandler {
     public static UUID hoster;
@@ -29,7 +29,7 @@ public class SumoHandler {
         inGame.add(player.getUniqueId());
         memorizeInventory(player);
         giveTournamentInventory(player);
-        Location loc = SumoLocationsHandler.getLobbyLocation();
+        Location loc = SumoLocationsHandler.getSpawnPointLocation("spec");
         player.teleport(loc);
     }
 
@@ -70,8 +70,8 @@ public class SumoHandler {
     public static void addPlayerInMatch(Player player, Player player2){
         inMatch.add(player.getUniqueId());
         inMatch.add(player2.getUniqueId());
-        Location position1 = getSpawnPointLocation(1);
-        Location position2 = getSpawnPointLocation(2);
+        Location position1 = getSpawnPointLocation("1");
+        Location position2 = getSpawnPointLocation("2");
         player.getInventory().clear();
         player2.getInventory().clear();
         player.teleport(position1);
@@ -104,6 +104,20 @@ public class SumoHandler {
 
     public static boolean isFighting(Player player){
         return fighting.contains(player.getUniqueId());
+    }
+
+    public static void removePlayerInFight(Player player){
+        fighting.remove(player.getUniqueId());
+        Location loc = SumoLocationsHandler.getSpawnPointLocation("spec");
+        player.teleport(loc);
+    }
+
+    public static Player getPlayerFighting(){
+        Player player = null;
+        for(UUID players : fighting){
+            player = Bukkit.getPlayer(players);
+        }
+        return player;
     }
 
     public static void clearPlayerFighting(){

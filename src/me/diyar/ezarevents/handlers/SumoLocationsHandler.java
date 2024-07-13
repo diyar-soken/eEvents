@@ -1,6 +1,6 @@
-package me.diyar.ezar.handlers;
+package me.diyar.ezarevents.handlers;
 
-import me.diyar.ezar.Main;
+import me.diyar.ezarevents.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,7 +15,7 @@ public class SumoLocationsHandler {
         return true;
     }
 
-    public static void spawnPoints(Location location, int spawnLocation){
+    public static void spawnPoints(Location location, String spawnLocation){
         int x,y,z;
         String world = location.getWorld().getName();
         x = location.getBlockX();
@@ -52,7 +52,7 @@ public class SumoLocationsHandler {
         return new Location(world, x, y, z);
     }
 
-    public static Location getSpawnPointLocation(int spawnLocation){
+    public static Location getSpawnPointLocation(String spawnLocation){
         String worldName;
         int x,y,z;
 

@@ -1,7 +1,7 @@
-package me.diyar.ezar.utils;
+package me.diyar.ezarevents.utils;
 
-import static me.diyar.ezar.Main.EventState;
-import static me.diyar.ezar.utils.MatchState.state.*;
+import static me.diyar.ezarevents.Main.EventState;
+import static me.diyar.ezarevents.utils.MatchState.state.*;
 
 public class MatchState {
 

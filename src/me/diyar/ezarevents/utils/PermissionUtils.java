@@ -1,6 +1,6 @@
-package me.diyar.ezar.utils;
+package me.diyar.ezarevents.utils;
 
-import me.diyar.ezar.Main;
+import me.diyar.ezarevents.Main;
 
 public class PermissionUtils {
 

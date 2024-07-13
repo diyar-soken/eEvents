@@ -1,20 +1,17 @@
-package me.diyar.ezar.handlers;
+package me.diyar.ezarevents.handlers;
 
-import me.diyar.ezar.Main;
-import me.diyar.ezar.utils.CountdownTimer;
-import org.bukkit.Bukkit;
+import me.diyar.ezarevents.Main;
+import me.diyar.ezarevents.utils.CountdownTimer;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.UUID;
 
-import static me.diyar.ezar.Main.inGame;
-import static me.diyar.ezar.events.SumoStart.*;
-import static me.diyar.ezar.handlers.SumoHandler.*;
-import static me.diyar.ezar.handlers.SumoHandler.resetPlayerInMatch;
-import static me.diyar.ezar.utils.MatchState.changeState;
-import static me.diyar.ezar.utils.MatchState.state.IN_GAME;
-import static me.diyar.ezar.utils.MessagesUtil.*;
+import static me.diyar.ezarevents.events.SumoStart.*;
+import static me.diyar.ezarevents.handlers.SumoHandler.*;
+import static me.diyar.ezarevents.handlers.SumoHandler.resetPlayerInMatch;
+import static me.diyar.ezarevents.utils.MatchState.changeState;
+import static me.diyar.ezarevents.utils.MatchState.state.IN_GAME;
+import static me.diyar.ezarevents.utils.MessagesUtil.*;
 
 public class SumoCountdowns {
 

@@ -1,6 +1,6 @@
-package me.diyar.ezar.handlers;
+package me.diyar.ezarevents.handlers;
 
-import me.diyar.ezar.Main;
+import me.diyar.ezarevents.Main;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -9,7 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 
-import static me.diyar.ezar.utils.MessagesUtil.printMessage;
+import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
 
 public class SumoInventoryHandler {
     public static HashMap<Player, ItemStack[]> itemhash = new HashMap<Player, ItemStack[]>();

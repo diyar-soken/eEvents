@@ -1,9 +1,9 @@
-package me.diyar.ezar;
+package me.diyar.ezarevents;
 
 import lombok.Getter;
-import me.diyar.ezar.commands.SumoCommand;
-import me.diyar.ezar.listeners.listener;
-import me.diyar.ezar.utils.MatchState;
+import me.diyar.ezarevents.commands.SumoCommand;
+import me.diyar.ezarevents.listeners.listener;
+import me.diyar.ezarevents.utils.MatchState;
 import net.minecraft.server.v1_8_R3.MinecraftServer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
-import static me.diyar.ezar.utils.MatchState.changeState;
+import static me.diyar.ezarevents.utils.MatchState.changeState;
 
 @Getter
 public final class Main extends JavaPlugin {

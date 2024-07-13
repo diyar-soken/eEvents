@@ -1,4 +1,4 @@
-package me.diyar.ezar.utils;
+package me.diyar.ezarevents.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;

@@ -1,23 +1,23 @@
-package me.diyar.ezar.commands;
+package me.diyar.ezarevents.commands;
 
-import me.diyar.ezar.Main;
-import me.diyar.ezar.handlers.SumoLocationsHandler;
+import me.diyar.ezarevents.Main;
+import me.diyar.ezarevents.handlers.SumoLocationsHandler;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import static me.diyar.ezar.events.SumoStart.startTournament;
-import static me.diyar.ezar.handlers.SumoHandler.*;
-import static me.diyar.ezar.handlers.SumoLocationsHandler.isLocationSet;
-import static me.diyar.ezar.handlers.SumoLocationsHandler.lobbyPoint;
-import static me.diyar.ezar.utils.MatchState.*;
-import static me.diyar.ezar.utils.MatchState.state.IN_GAME;
-import static me.diyar.ezar.utils.MatchState.state.LOBBY;
-import static me.diyar.ezar.utils.MessagesUtil.printListMessages;
-import static me.diyar.ezar.utils.MessagesUtil.printMessage;
-import static me.diyar.ezar.utils.PermissionUtils.adminpermission;
-import static me.diyar.ezar.utils.PermissionUtils.hostpermission;
+import static me.diyar.ezarevents.events.SumoStart.startTournament;
+import static me.diyar.ezarevents.handlers.SumoHandler.*;
+import static me.diyar.ezarevents.handlers.SumoLocationsHandler.isLocationSet;
+import static me.diyar.ezarevents.handlers.SumoLocationsHandler.lobbyPoint;
+import static me.diyar.ezarevents.utils.MatchState.*;
+import static me.diyar.ezarevents.utils.MatchState.state.IN_GAME;
+import static me.diyar.ezarevents.utils.MatchState.state.LOBBY;
+import static me.diyar.ezarevents.utils.MessagesUtil.printListMessages;
+import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
+import static me.diyar.ezarevents.utils.PermissionUtils.adminpermission;
+import static me.diyar.ezarevents.utils.PermissionUtils.hostpermission;
 
 public class SumoCommand extends Command {
 
@@ -100,6 +100,10 @@ public class SumoCommand extends Command {
                         else if(args[1].equalsIgnoreCase("2")){
                             SumoLocationsHandler.spawnPoints(playerLocation, Integer.parseInt(args[1]));
                             player.sendMessage(printMessage("spawnpoint2"));
+                        }
+                        else if(args[1].equalsIgnoreCase("spec")){
+                            SumoLocationsHandler.spawnPoints(playerLocation, Integer.parseInt(args[1]));
+                            player.sendMessage(printMessage("specpoint"));
                         }
                         else{
                             printListMessages("admin-help-command", player);
