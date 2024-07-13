@@ -63,9 +63,6 @@ public class SumoHandler {
 
     public static void removePlayerInMatch(Player player){
         inMatch.remove(player.getUniqueId());
-        Location loc = SumoLocations.getLobbyLocation();
-        player.teleport(loc);
-        giveTournamentInventory(player);
     }
 
     public static Player getPlayerInMatch(){
@@ -89,7 +86,7 @@ public class SumoHandler {
         return fighting.contains(player.getUniqueId());
     }
 
-    public static void clearPlayerFighting(Player player){
+    public static void clearPlayerFighting(){
         fighting.clear();
     }
 

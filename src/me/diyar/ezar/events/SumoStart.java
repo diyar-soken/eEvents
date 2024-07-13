@@ -92,10 +92,11 @@ public class SumoStart {
                 },
                 () -> {
                     addPlayerFighting(player1,player2);
+                    resetPlayerInMatch();
                     sendMessageToTournament("§eMatch Started");
                 },
                 (t) -> {
-                    broadcastMessageTime(t.getSecondsLeft());
+                    sendMessageToTournament(String.valueOf(t.getSecondsLeft()));
                 }
 
         );

@@ -29,11 +29,12 @@ public class listener implements Listener {
 
         if(isTournamentStarted()){
             if(isInTournament(player)){
-                if(isInMatch(player)){
+                if(isFighting(player)){
                     if(material == Material.STATIONARY_WATER || material == Material.WATER){
                         removePlayerInTournament(player);
                         player.sendMessage(printMessage("eliminated"));
-                        removePlayerInMatch(getPlayerInMatch());
+                        resetPlayerInMatch();
+                        clearPlayerFighting();
                         sendMessageToTournament(printMessage("broadcastElimination").replace("%player%", player.getName()));
                         if(getTournamentSize()<2){
                             Player winner = winner();
@@ -58,7 +59,7 @@ public class listener implements Listener {
     public void onPlayerInMatchMoveEvent(PlayerMoveEvent event){
         Player player = event.getPlayer();
         if(isInTournament(player)){
-            while(isInMatch(player)){
+            if(isInMatch(player)){
                 Location to = event.getTo();
                 Location from = event.getFrom();
                 if ((to.getX() != from.getX() || to.getZ() != from.getZ())) {
