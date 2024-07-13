@@ -94,15 +94,15 @@ public class SumoCommand extends Command {
                 if(args[0].equalsIgnoreCase("setspawn")) {
                     if(player.hasPermission(adminpermission)){
                         if(args[1].equalsIgnoreCase("1")){
-                            SumoLocationsHandler.spawnPoints(playerLocation, Integer.parseInt(args[1]));
+                            SumoLocationsHandler.spawnPoints(playerLocation, String.valueOf(Integer.parseInt(args[1])));
                             player.sendMessage(printMessage("spawnpoint1"));
                         }
                         else if(args[1].equalsIgnoreCase("2")){
-                            SumoLocationsHandler.spawnPoints(playerLocation, Integer.parseInt(args[1]));
+                            SumoLocationsHandler.spawnPoints(playerLocation, String.valueOf(Integer.parseInt(args[1])));
                             player.sendMessage(printMessage("spawnpoint2"));
                         }
                         else if(args[1].equalsIgnoreCase("spec")){
-                            SumoLocationsHandler.spawnPoints(playerLocation, Integer.parseInt(args[1]));
+                            SumoLocationsHandler.spawnPoints(playerLocation, String.valueOf(Integer.parseInt(args[1])));
                             player.sendMessage(printMessage("specpoint"));
                         }
                         else{
