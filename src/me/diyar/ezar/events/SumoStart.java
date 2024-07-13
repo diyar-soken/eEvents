@@ -36,12 +36,6 @@ public class SumoStart {
 
     public static void startedTournament(){
         if(!inGame.isEmpty()){
-            for (UUID uuid : inGame) {
-                Player player = Bukkit.getPlayer(uuid);
-                Location loc = getLobbyLocation();
-                player.teleport(loc);
-            }
-
             Player randomPlayer1 = Bukkit.getPlayer(randomPlayer());
             Player randomPlayer2 = Bukkit.getPlayer(randomPlayer());
             while(randomPlayer1 == randomPlayer2){
