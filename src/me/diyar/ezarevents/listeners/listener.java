@@ -26,7 +26,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import static me.diyar.ezarevents.events.SumoStart.startMatch;
 import static me.diyar.ezarevents.handlers.SumoHandler.*;
-import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getLobbyLocation;
+import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getSpawnPointLocation;
 import static me.diyar.ezarevents.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
 import static me.diyar.ezarevents.utils.MessagesUtil.sendMessageToTournament;
@@ -37,7 +37,7 @@ public class listener implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         Player player = event.getPlayer();
-        Location lobby = getLobbyLocation();
+        Location lobby = getSpawnPointLocation("Lobby");
         if(player.hasPlayedBefore()){
             player.teleport(lobby);
         }
@@ -159,17 +159,13 @@ public class listener implements Listener {
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
-        /*Player player = (Player) event.getEntity();
+        Player player = (Player) event.getEntity();
         if(isTournamentStarted()){
             if(isInTournament(player)){
                 event.setFoodLevel(20);
                 Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> event.setCancelled(true), 1L);
             }
         }
-        event.setCancelled(false);
-         */
-        event.setFoodLevel(20);
-        Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> event.setCancelled(true), 1L);
     }
 
     @EventHandler

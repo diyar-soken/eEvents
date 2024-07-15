@@ -10,10 +10,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import static me.diyar.ezarevents.Main.*;
 import static me.diyar.ezarevents.handlers.SumoInventoryHandler.*;
-import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getLobbyLocation;
 import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getSpawnPointLocation;
 import static me.diyar.ezarevents.utils.MatchState.changeState;
-import static me.diyar.ezarevents.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezarevents.utils.MatchState.state.END;
 import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
 import static me.diyar.ezarevents.utils.MessagesUtil.sendMessageToTournament;
@@ -42,7 +40,7 @@ public class SumoHandler {
         fighting.remove(player.getUniqueId());
         inMatch.remove(player.getUniqueId());
         restoreInventory(player);
-        Location loc = SumoLocationsHandler.getLobbyLocation();
+        Location loc = getSpawnPointLocation("Lobby");
         player.teleport(loc);
     }
 
@@ -58,28 +56,29 @@ public class SumoHandler {
         for (UUID uuid : inGame) {
             Player player = Bukkit.getPlayer(uuid);
             restoreInventory(player);
-            player.teleport(getLobbyLocation());
+            player.teleport(getSpawnPointLocation("Lobby"));
+        }
+        for (UUID uuid : inMatch) {
+            Player player = Bukkit.getPlayer(uuid);
+            restoreInventory(player);
+            player.teleport(getSpawnPointLocation("Lobby"));
+        }
+        for (UUID uuid : fighting) {
+            Player player = Bukkit.getPlayer(uuid);
+            restoreInventory(player);
+            player.teleport(getSpawnPointLocation("Lobby"));
         }
         inGame.clear();
-        resetPlayerInMatch();
+        inMatch.clear();
+        fighting.clear();
         hoster = null;
         changeState(END);
     }
 
     public static void leaveTournament(Player player){
-        if(isTournamentStarted()){
-            if(isInTournament(player)){
-                player.sendMessage(printMessage("leave-message"));
-                removePlayerInTournament(player);
-                sendMessageToTournament(printMessage("leave-tournament").replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("max-slot")));
-            }
-            else{
-                player.sendMessage(printMessage("not-inevent"));
-            }
-        }
-        else{
-            player.sendMessage(printMessage("noevent"));
-        }
+        player.sendMessage(printMessage("leave-message"));
+        removePlayerInTournament(player);
+        sendMessageToTournament(printMessage("leave-tournament").replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("max-slot")));
     }
 
     ///////////

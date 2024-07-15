@@ -9,8 +9,7 @@ import org.bukkit.entity.Player;
 
 import static me.diyar.ezarevents.events.SumoStart.startTournament;
 import static me.diyar.ezarevents.handlers.SumoHandler.*;
-import static me.diyar.ezarevents.handlers.SumoLocationsHandler.isLocationSet;
-import static me.diyar.ezarevents.handlers.SumoLocationsHandler.lobbyPoint;
+import static me.diyar.ezarevents.handlers.SumoLocationsHandler.*;
 import static me.diyar.ezarevents.utils.MatchState.*;
 import static me.diyar.ezarevents.utils.MatchState.state.IN_GAME;
 import static me.diyar.ezarevents.utils.MatchState.state.LOBBY;
@@ -68,21 +67,26 @@ public class SumoCommand extends Command {
                 }
                 else if(args[0].equalsIgnoreCase("setlobby")) {
                     if(player.hasPermission(adminpermission)){
-                        lobbyPoint(playerLocation);
+                        spawnPoints(playerLocation, "Lobby");
                         player.sendMessage(printMessage("setlobby"));
                     }
                     else{
                         player.sendMessage(printMessage("noperms"));
                     }
                 }
-                else if(args[0].equalsIgnoreCase("test")){
-                    player.sendMessage("Giocatori nel torneo: " + String.valueOf(getTournamentSize()));
-                    player.sendMessage("Stato torneo: " + getState());
-                    player.sendMessage("Torneo iniziato: " + String.valueOf(isTournamentStarted()));
-                    player.sendMessage("In parita: " + String.valueOf(isInMatch(player)));
-                    player.sendMessage("Combattendo: " + String.valueOf(isFighting(player)));
-                }
-                else if(args[0].equalsIgnoreCase("leave")){
+                else if(args[0].equalsIgnoreCase("forceend")){
+                    if (player.hasPermission(adminpermission)){
+                        if(isTournamentStarted()){
+                            sendMessageToTournament(printMessage("force-ended").replace("%player%", player.getName()));
+                            cancelTournament();
+                        }
+                        else{
+                            player.sendMessage("noevent");
+                        }
+                    }
+                    else{
+                        player.sendMessage(printMessage("noperms"));
+                    }
                 }
                 else{
                     if(player.hasPermission(adminpermission)){
