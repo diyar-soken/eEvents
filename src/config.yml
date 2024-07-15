@@ -1,5 +1,6 @@
 admin-permission: "ezar.sumo"
 host-permission: "ezar.sumo.host"
+max-slot: 32
 reload: "&e[SUMO] &aConfig reloaded correctly."
 noperms: "&cSorry but you do not have permission to execute this command."
 host-permission-message: "&eIf you want host a sumo event you need to be vip. &dhttps://store.ezar.it"
@@ -10,14 +11,17 @@ spawnpoint2: "&e[SUMO] &aPlayer spawn point 2 has been set correctly."
 specpoint: "&e[SUMO] &aPlayer spectate point has been set correctly."
 already-on: "&cEvent already on."
 noevent: "&aThere are no events hosted."
+not-inevent: "&cYou are not in the tournament."
 alreadyin: "&cYou are already in the sumo event."
-eliminated: "§cYou have been eliminated."
+eliminated: "&cYou have been eliminated."
 broadcastElimination: "&e(Event) &c%looser% &7has been eliminated by &a%winner%"
 winner: "&e(Event) &aWinner: %winner%"
-joining: "&aJoining the sumo event.."
+join-tournament: "&a%player% &ejoined the tournament. (&9%inTournament%&e/&9%maxTournament%&e)"
 in-game: "&eThe event is started."
 not-enough-players: "&cNo enough players in the event."
-leaveitem: "&cLeave event &7(Left click)"
+leaveitem: "&cLeave event &7(Right click)"
+leave-message: "&cYou just left the tournament."
+leave-tournament: "&a%player% &eleft the tournament. (&9%inTournament%&e/&9%maxTournament%&e)"
 leaveitem-position: 9
 time: 60
 times: [45, 30, 15, 10, 5, 4, 3, 2, 1]

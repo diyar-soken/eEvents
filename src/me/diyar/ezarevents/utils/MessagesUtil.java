@@ -7,8 +7,7 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.UUID;
 
-import static me.diyar.ezarevents.Main.inGame;
-import static me.diyar.ezarevents.Main.inMatch;
+import static me.diyar.ezarevents.Main.*;
 import static me.diyar.ezarevents.handlers.SumoHandler.getHoster;
 
 public class MessagesUtil {
@@ -34,6 +33,13 @@ public class MessagesUtil {
 
     public static void sendMessageToInMatch(String message){
         for (UUID uuid : inMatch) {
+            Player player = Bukkit.getPlayer(uuid);
+            player.sendMessage(message);
+        }
+    }
+
+    public static void sendMessageToFighters(String message){
+        for (UUID uuid : fighting) {
             Player player = Bukkit.getPlayer(uuid);
             player.sendMessage(message);
         }

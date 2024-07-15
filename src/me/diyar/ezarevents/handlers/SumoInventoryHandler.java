@@ -33,7 +33,7 @@ public class SumoInventoryHandler {
     public static void restoreInventory(Player player){
         if(itemhash.containsKey(player)){
             ItemStack[] items = itemhash.get(player);
-            PlayerInventory inv = player.getInventory();
+            player.getInventory().clear();
             for(ItemStack item : items){
                 if(item != null) {
                     player.getInventory().addItem(item);

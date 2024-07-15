@@ -16,53 +16,68 @@ public class SumoLocationsHandler {
     }
 
     public static void spawnPoints(Location location, String spawnLocation){
-        int x,y,z;
+        double x,y,z;
+        float yaw,pitch;
         String world = location.getWorld().getName();
         x = location.getBlockX();
         y = location.getBlockY();
         z = location.getBlockZ();
+        yaw = location.getYaw();
+        pitch = location.getPitch();
         Main.getInstance().getConfig().set("Sumo." + spawnLocation, "");
         Main.getInstance().getConfig().set("Sumo." + spawnLocation + ".world", world);
-        Main.getInstance().getConfig().set("Sumo." + spawnLocation + ".x", Integer.valueOf(x));
-        Main.getInstance().getConfig().set("Sumo." + spawnLocation + ".y", Integer.valueOf(y));
-        Main.getInstance().getConfig().set("Sumo." + spawnLocation + ".z", Integer.valueOf(z));
+        Main.getInstance().getConfig().set("Sumo." + spawnLocation + ".x", Double.valueOf(x));
+        Main.getInstance().getConfig().set("Sumo." + spawnLocation + ".y", Double.valueOf(y));
+        Main.getInstance().getConfig().set("Sumo." + spawnLocation + ".z", Double.valueOf(z));
+        Main.getInstance().getConfig().set("Sumo." + spawnLocation + ".yaw", Float.valueOf(yaw));
+        Main.getInstance().getConfig().set("Sumo." + spawnLocation + ".pitch", Float.valueOf(pitch));
         Main.getInstance().saveConfig();
     }
 
     public static void lobbyPoint(Location location){
-        int x,y,z;
+        double x,y,z;
+        float yaw,pitch;
         String world = location.getWorld().getName();
         x = location.getBlockX();
         y = location.getBlockY();
         z = location.getBlockZ();
+        yaw = location.getYaw();
+        pitch = location.getPitch();
         Main.getInstance().getConfig().set("Lobby", "");
         Main.getInstance().getConfig().set("Lobby.world", world);
-        Main.getInstance().getConfig().set("Lobby.x", Integer.valueOf(x));
-        Main.getInstance().getConfig().set("Lobby.y", Integer.valueOf(y));
-        Main.getInstance().getConfig().set("Lobby.z", Integer.valueOf(z));
+        Main.getInstance().getConfig().set("Lobby.x", Double.valueOf(x));
+        Main.getInstance().getConfig().set("Lobby.y", Double.valueOf(y));
+        Main.getInstance().getConfig().set("Lobby.z", Double.valueOf(z));
+        Main.getInstance().getConfig().set("Lobby.yaw", Float.valueOf(yaw));
+        Main.getInstance().getConfig().set("Lobby.pitch", Float.valueOf(pitch));
         Main.getInstance().saveConfig();
     }
 
     public static Location getLobbyLocation(){
         String worldname = Main.getInstance().getConfig().getString("Lobby.world");
-        int x = Main.getInstance().getConfig().getInt("Lobby.x");
-        int y = Main.getInstance().getConfig().getInt("Lobby.y");
-        int z = Main.getInstance().getConfig().getInt("Lobby.z");
+        double x = Main.getInstance().getConfig().getDouble("Lobby.x");
+        double y = Main.getInstance().getConfig().getDouble("Lobby.y");
+        double z = Main.getInstance().getConfig().getDouble("Lobby.z");
+        float yaw = Main.getInstance().getConfig().getInt("Lobby.yaw");
+        float pitch = Main.getInstance().getConfig().getInt("Lobby.pitch");
         World world = Bukkit.getWorld(worldname);
-        return new Location(world, x, y, z);
+        return new Location(world, x, y, z,yaw,pitch);
     }
 
     public static Location getSpawnPointLocation(String spawnLocation){
         String worldName;
-        int x,y,z;
+        double x,y,z;
+        float yaw,pitch;
 
         worldName = Main.getInstance().getConfig().getString("Sumo." + spawnLocation + ".world");
-        x = Main.getInstance().getConfig().getInt("Sumo." + spawnLocation + ".x");
-        y = Main.getInstance().getConfig().getInt("Sumo." + spawnLocation + ".y");
-        z = Main.getInstance().getConfig().getInt("Sumo." + spawnLocation + ".z");
+        x = Main.getInstance().getConfig().getDouble("Sumo." + spawnLocation + ".x");
+        y = Main.getInstance().getConfig().getDouble("Sumo." + spawnLocation + ".y");
+        z = Main.getInstance().getConfig().getDouble("Sumo." + spawnLocation + ".z");
+        yaw = Main.getInstance().getConfig().getInt("Sumo." + spawnLocation + ".yaw");
+        pitch = Main.getInstance().getConfig().getInt("Sumo." + spawnLocation + ".pitch");
 
         World world = Bukkit.getWorld(worldName);
 
-        return new Location(world, x, y, z);
+        return new Location(world, x, y, z,yaw,pitch);
     }
 }

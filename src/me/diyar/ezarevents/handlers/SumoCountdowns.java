@@ -65,7 +65,7 @@ public class SumoCountdowns {
                 () -> {
                     addPlayerFighting(player1,player2);
                     resetPlayerInMatch();
-                    sendMessageToInMatch(printMessage("match-started"));
+                    sendMessageToFighters(printMessage("match-started"));
                 },
                 (t) -> {
                     sendMessageToInMatch(printMessage("match-countdown-message").replace("%time%", String.valueOf(t.getSecondsLeft())));

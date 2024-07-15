@@ -14,8 +14,7 @@ import static me.diyar.ezarevents.handlers.SumoLocationsHandler.lobbyPoint;
 import static me.diyar.ezarevents.utils.MatchState.*;
 import static me.diyar.ezarevents.utils.MatchState.state.IN_GAME;
 import static me.diyar.ezarevents.utils.MatchState.state.LOBBY;
-import static me.diyar.ezarevents.utils.MessagesUtil.printListMessages;
-import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
+import static me.diyar.ezarevents.utils.MessagesUtil.*;
 import static me.diyar.ezarevents.utils.PermissionUtils.adminpermission;
 import static me.diyar.ezarevents.utils.PermissionUtils.hostpermission;
 
@@ -38,8 +37,10 @@ public class SumoCommand extends Command {
                 else if(args[0].equalsIgnoreCase("join")) {
                     if(verifyState(LOBBY)){
                         if(!isInTournament(player)){
-                            addPlayerInTournament(player);
-                            player.sendMessage(printMessage("joining"));
+                            if(getTournamentSize()<getTournamentMaxSize()){
+                                addPlayerInTournament(player);
+                                sendMessageToTournament(printMessage("join-tournament").replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("max-slot")));
+                            }
                         }
                         else{
                             player.sendMessage(printMessage("alreadyin"));
@@ -81,6 +82,8 @@ public class SumoCommand extends Command {
                     player.sendMessage("In parita: " + String.valueOf(isInMatch(player)));
                     player.sendMessage("Combattendo: " + String.valueOf(isFighting(player)));
                 }
+                else if(args[0].equalsIgnoreCase("leave")){
+                }
                 else{
                     if(player.hasPermission(adminpermission)){
                         printListMessages("admin-help-command", player);
@@ -102,7 +105,7 @@ public class SumoCommand extends Command {
                             player.sendMessage(printMessage("spawnpoint2"));
                         }
                         else if(args[1].equalsIgnoreCase("spec")){
-                            SumoLocationsHandler.spawnPoints(playerLocation, String.valueOf(Integer.parseInt(args[1])));
+                            SumoLocationsHandler.spawnPoints(playerLocation, args[1]);
                             player.sendMessage(printMessage("specpoint"));
                         }
                         else{

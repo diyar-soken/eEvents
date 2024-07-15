@@ -1,12 +1,16 @@
 package me.diyar.ezarevents.listeners;
 
+import me.diyar.ezarevents.Main;
+import me.diyar.ezarevents.handlers.SumoLocationsHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -15,17 +19,32 @@ import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import static me.diyar.ezarevents.events.SumoStart.startMatch;
 import static me.diyar.ezarevents.handlers.SumoHandler.*;
+import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getLobbyLocation;
 import static me.diyar.ezarevents.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
 import static me.diyar.ezarevents.utils.MessagesUtil.sendMessageToTournament;
 import static me.diyar.ezarevents.utils.PermissionUtils.adminpermission;
 
 public class listener implements Listener {
+
+    @EventHandler
+    public void onPlayerJoin(PlayerJoinEvent event){
+        Player player = event.getPlayer();
+        Location lobby = getLobbyLocation();
+        if(player.hasPlayedBefore()){
+            player.teleport(lobby);
+        }
+        else{
+            player.teleport(lobby);
+        }
+    }
 
     @EventHandler
     public void onWaterTouch(PlayerMoveEvent event){
@@ -37,13 +56,15 @@ public class listener implements Listener {
                 if(isFighting(player)){
                     if(material == Material.STATIONARY_WATER || material == Material.WATER){
                         removePlayerInTournament(player);
-                        player.sendMessage(printMessage("eliminated"));
                         Player playerMatchWinner = getPlayerFighting();
+                        sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
                         removePlayerInFight(playerMatchWinner);
                         clearPlayerFighting();
-                        sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
+                        resetPlayerInMatch();
                         if(getTournamentSize()<2){
                             Player winner = winner();
+                            Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
+                            Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
                             Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
                             cancelTournament();
                         }
@@ -109,6 +130,9 @@ public class listener implements Listener {
                     }
                 }
             }
+            else{
+                event.setCancelled(true);
+            }
         }
     }
 
@@ -118,7 +142,6 @@ public class listener implements Listener {
             Player player = (Player) event.getEntity();
             if(isTournamentStarted()){
                 if(isInTournament(player)){
-                    player.setVelocity(player.getLocation().getDirection().multiply(0));
                     if(isFighting(player)){
                         event.setCancelled(false);
 
@@ -134,15 +157,19 @@ public class listener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onFoodLevel(FoodLevelChangeEvent event) {
-        Player player = (Player) event.getEntity();
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onFoodLevelChange(FoodLevelChangeEvent event) {
+        /*Player player = (Player) event.getEntity();
         if(isTournamentStarted()){
-            if(isInTournament(player) || isInMatch(player) || isFighting(player)){
-                event.setCancelled(true);
+            if(isInTournament(player)){
+                event.setFoodLevel(20);
+                Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> event.setCancelled(true), 1L);
             }
         }
         event.setCancelled(false);
+         */
+        event.setFoodLevel(20);
+        Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> event.setCancelled(true), 1L);
     }
 
     @EventHandler
@@ -152,6 +179,22 @@ public class listener implements Listener {
             if(isInTournament(player)){
                 if(!player.hasPermission(adminpermission) || !player.getGameMode().equals(GameMode.CREATIVE)){
                     event.setCancelled(true);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void onItemClick(PlayerInteractEvent event){
+        Player player = event.getPlayer();
+        if(isTournamentStarted()){
+            if(isInTournament(player)){
+                if(event.hasItem()){
+                    if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(printMessage("leaveitem"))){
+                        if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)){
+                            leaveTournament(player);
+                        }
+                    }
                 }
             }
         }

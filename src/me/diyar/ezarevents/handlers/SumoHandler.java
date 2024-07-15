@@ -1,5 +1,6 @@
 package me.diyar.ezarevents.handlers;
 
+import me.diyar.ezarevents.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,7 +13,10 @@ import static me.diyar.ezarevents.handlers.SumoInventoryHandler.*;
 import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getLobbyLocation;
 import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getSpawnPointLocation;
 import static me.diyar.ezarevents.utils.MatchState.changeState;
+import static me.diyar.ezarevents.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezarevents.utils.MatchState.state.END;
+import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
+import static me.diyar.ezarevents.utils.MessagesUtil.sendMessageToTournament;
 
 public class SumoHandler {
     public static UUID hoster;
@@ -35,9 +39,15 @@ public class SumoHandler {
 
     public static void removePlayerInTournament(Player player){
         inGame.remove(player.getUniqueId());
+        fighting.remove(player.getUniqueId());
+        inMatch.remove(player.getUniqueId());
         restoreInventory(player);
         Location loc = SumoLocationsHandler.getLobbyLocation();
         player.teleport(loc);
+    }
+
+    public static int getTournamentMaxSize(){
+        return Main.getInstance().getConfig().getInt("max-slot");
     }
 
     public static int getTournamentSize(){
@@ -54,6 +64,22 @@ public class SumoHandler {
         resetPlayerInMatch();
         hoster = null;
         changeState(END);
+    }
+
+    public static void leaveTournament(Player player){
+        if(isTournamentStarted()){
+            if(isInTournament(player)){
+                player.sendMessage(printMessage("leave-message"));
+                removePlayerInTournament(player);
+                sendMessageToTournament(printMessage("leave-tournament").replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("max-slot")));
+            }
+            else{
+                player.sendMessage(printMessage("not-inevent"));
+            }
+        }
+        else{
+            player.sendMessage(printMessage("noevent"));
+        }
     }
 
     ///////////
