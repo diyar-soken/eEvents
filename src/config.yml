@@ -55,3 +55,4 @@ placeholders:
   fighting: "Fighting.."
   spectating: "Spectating"
   end: "Ending"
+quit-fighting: "%player% just quitted during the event. Has been eliminated from the event."

@@ -8,7 +8,6 @@ import static me.diyar.ezarevents.Main.inGame;
 import static me.diyar.ezarevents.handlers.SumoCountdowns.*;
 import static me.diyar.ezarevents.handlers.SumoHandler.*;
 import static me.diyar.ezarevents.utils.MatchState.changeState;
-import static me.diyar.ezarevents.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezarevents.utils.MatchState.state.*;
 
 public class SumoStart {

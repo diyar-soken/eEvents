@@ -11,10 +11,10 @@ import java.util.concurrent.ThreadLocalRandom;
 import static me.diyar.ezarevents.Main.*;
 import static me.diyar.ezarevents.handlers.SumoInventoryHandler.*;
 import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getSpawnPointLocation;
-import static me.diyar.ezarevents.utils.MatchState.changeState;
-import static me.diyar.ezarevents.utils.MatchState.state.END;
 import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
 import static me.diyar.ezarevents.utils.MessagesUtil.sendMessageToTournament;
+import static me.diyar.ezarevents.utils.MatchState.*;
+import static me.diyar.ezarevents.utils.MatchState.state.*;
 
 public class SumoHandler {
     public static UUID hoster;
@@ -23,12 +23,19 @@ public class SumoHandler {
     // TOURNAMENT //
     ////////////////
 
+    public static boolean isTournamentStarted(){
+        if(getState().equalsIgnoreCase(String.valueOf(LOBBY)) || getState().equalsIgnoreCase(String.valueOf(IN_GAME))){
+            return true;
+        }
+        return false;
+    }
+
     public static boolean isInTournament(Player player){
         return inGame.contains(player.getUniqueId()) || spectating.contains(player.getUniqueId());
     }
 
     public static void addPlayerInTournament(Player player){
-        inGame.add(player.getUniqueId());
+        changeState(IN_GAME);
         memorizeInventory(player);
         giveTournamentInventory(player);
         Location loc = SumoLocationsHandler.getSpawnPointLocation("spec");
@@ -206,6 +213,16 @@ public class SumoHandler {
 
     public static boolean isInSpectatorMode(Player player){
         return spectating.contains(player.getUniqueId());
+    }
+
+    // QUITTED//
+
+    public static void addPlayerQuitted(Player player){
+        quitted.add(player.getUniqueId());
+        inGame.remove(player.getUniqueId());
+        inMatch.remove(player.getUniqueId());
+        fighting.remove(player.getUniqueId());
+        spectating.remove(player.getUniqueId());
     }
 
     // UTIL PLAYERS //

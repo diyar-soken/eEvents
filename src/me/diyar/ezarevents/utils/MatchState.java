@@ -21,10 +21,4 @@ public class MatchState {
         return EventState.get("Sumo");
     }
 
-    public static boolean isTournamentStarted(){
-        if(getState().equalsIgnoreCase(String.valueOf(LOBBY)) || getState().equalsIgnoreCase(String.valueOf(IN_GAME))){
-            return true;
-        }
-        return false;
-    }
 }

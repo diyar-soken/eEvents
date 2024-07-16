@@ -1,7 +1,6 @@
 package me.diyar.ezarevents.listeners;
 
 import me.diyar.ezarevents.Main;
-import me.diyar.ezarevents.handlers.SumoLocationsHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;
@@ -18,17 +17,13 @@ import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
-import org.bukkit.event.player.PlayerDropItemEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.*;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import static me.diyar.ezarevents.Main.quitted;
 import static me.diyar.ezarevents.events.SumoStart.startMatch;
 import static me.diyar.ezarevents.handlers.SumoHandler.*;
-import static me.diyar.ezarevents.handlers.SumoInventoryHandler.giveTournamentInventory;
 import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getSpawnPointLocation;
-import static me.diyar.ezarevents.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
 import static me.diyar.ezarevents.utils.MessagesUtil.sendMessageToTournament;
 import static me.diyar.ezarevents.utils.PermissionUtils.adminpermission;
@@ -36,14 +31,35 @@ import static me.diyar.ezarevents.utils.PermissionUtils.adminpermission;
 public class listener implements Listener {
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent event){
+    public void onPlayerQuitEvent(PlayerQuitEvent event){
         Player player = event.getPlayer();
-        Location lobby = getSpawnPointLocation("Lobby");
-        if(player.hasPlayedBefore()){
-            player.teleport(lobby);
+        if(isTournamentStarted()){
+            if(isInTournament(player) || isFighting(player) || isInMatch(player) || isInSpectatorMode(player)){
+                Player playerMatchWinner = getPlayerFighting();
+                removePlayerInFight(playerMatchWinner);
+                clearPlayerFighting();
+                resetPlayerInMatch();
+                addPlayerQuitted(player);
+                if(getTournamentSize()<2){
+                    sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", winner().getName()));
+                    Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
+                    Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
+                    Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
+                    cancelTournament();
+                }
+                else{
+                    sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
+                    startMatch();
+                }
+            }
         }
-        else{
-            player.teleport(lobby);
+    }
+
+    @EventHandler
+    public void onPlayerJoinEvent(PlayerJoinEvent event){
+        Player player = event.getPlayer();
+        if(quitted.contains(player.getUniqueId())){
+            removePlayerInTournament(player);
         }
     }
 

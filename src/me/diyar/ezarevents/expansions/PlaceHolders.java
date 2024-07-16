@@ -11,7 +11,6 @@ import org.jetbrains.annotations.NotNull;
 
 import static me.diyar.ezarevents.handlers.SumoHandler.*;
 import static me.diyar.ezarevents.utils.MatchState.getState;
-import static me.diyar.ezarevents.utils.MatchState.isTournamentStarted;
 
 public class PlaceHolders extends PlaceholderExpansion {
     @Override
