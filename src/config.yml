@@ -6,6 +6,7 @@
 # PERMISSIONS
 ADMIN-PERMISSION: "ezar.sumo"
 JOIN-PERMISSION: "ezar.sumo.join"
+SPEC-PERMISSION: "ezar.sumo.spec"
 HOST-PERMISSION: "ezar.sumo.host"
 
 # HANDLERS
@@ -19,46 +20,37 @@ MATCH-COUNTDOWN: 3
 WINNER-MESSAGE-TIMES: 3
 
 # MESSAGES
-
 RELOAD: "&e[SUMO] &aConfig reloaded correctly."
-
 NOPERMISSION: "&cSorry but you do not have permission to execute this command."
-JOIN-NOPERMISSION: "&cSorry but you do not have permission to execute this command."
 HOST-NOPERMISSION: "&eIf you want host a sumo event you need to be vip. &dhttps://store.ezar.it"
-
 NOSPAWNPOINTS: "&cYou need to set the Lobby & Spawn locations first."
 SPAWNPOINT-LOBBY: "&e[SUMO] &aSumo lobby has been set correctly."
 SPAWNPOINT-SPEC: "&e[SUMO] &aPlayer spectate point has been set correctly."
 SPAWNPOINT-1: "&e[SUMO] &aPlayer spawn point 1 has been set correctly."
 SPAWNPOINT-2: "&e[SUMO] &aPlayer spawn point 2 has been set correctly."
-
 NO-HOSTED-EVENT: "&aThere are no events hosted."
 HOSTED: "&cEvent already on."
 NOT-INEVENT: "&cYou are not in the tournament."
-
 TOURNAMENT-BROADCAST-MESSAGE: "&9%host% &eStarted &aSumo &eevent is going to begun in &b%time%s &7Type &7/sumo join"
 TOURNAMENT-COUNTDOWN-MESSAGE: "&e(Event) &7Tournament will begin in &9%time% &7seconds..."
-
 TOURNAMENT-JOIN: "&a%player% &ejoined the tournament. (&9%inTournament%&e/&9%maxTournament%&e)"
 TOURNAMENT-QUIT: "&a%player% &eleft the tournament. (&9%inTournament%&e/&9%maxTournament%&e)"
-
+SPEC-MESSAGE: "&aYou are spectating the tournament."
 INEVENT: "&cYou are already in the sumo event."
 STARTED: "&eThe event is started."
 NO-ENOUGH-PLAYERS: "&cNo enough players in the event."
-
 ELIMINATED: "&cYou have been eliminated."
 TOURNAMENT-ELIMINATION: "&e(Event) &c%looser% &7has been eliminated by &a%winner%"
-
 WINNER: "&e(Event) &aWinner: %winner%"
-
 LEAVEITEM-DISPLAYNAME: "&cLeave event &7(Right click)"
 TOURNAMENT-LEAVE-MESSAGE: "&cYou just left the tournament."
-
 PREMATCH-MESSAGE: "&e(Event) &7Selecting random players..."
 MATCH-INFO-MESSAGE: "&eStartig event match. &a(%player1% vs %player2%)"
 MATCH-COUNTDOWN-MESSAGE: "&eThe match starts in &a%time%&e..."
 MATCH-STARTED-MESSAGE: "&aThe match has started good luck!"
 MATCH-QUIT-MESSAGE: "%player% just quitted during the event. Has been eliminated from the event."
+
+# HELP MESSAGES
 
 ADMIN-HELP:
   - "&7&m----------------------------"
@@ -77,8 +69,11 @@ HELP:
   - "&7&m----------------------------"
   - " &4* &6/SUMO HOST &8- &fHosts the tournament."
   - " &4* &6/SUMO JOIN &8- &fJoins the tournament."
+  - " &4* &6/SUMO SPEC &8- &fSpectate the tournament."
   - "&7&m----------------------------"
-
+###############
+#PLACEHOLDERS#
+#############
 PLACEHOLDERS:
   LOBBY: "Waiting.."
   IN-GAME: "In game.."

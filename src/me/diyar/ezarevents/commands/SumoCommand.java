@@ -14,8 +14,7 @@ import static me.diyar.ezarevents.utils.MatchState.*;
 import static me.diyar.ezarevents.utils.MatchState.state.IN_GAME;
 import static me.diyar.ezarevents.utils.MatchState.state.LOBBY;
 import static me.diyar.ezarevents.utils.MessagesUtil.*;
-import static me.diyar.ezarevents.utils.PermissionUtils.adminpermission;
-import static me.diyar.ezarevents.utils.PermissionUtils.hostpermission;
+import static me.diyar.ezarevents.utils.PermissionUtils.*;
 
 public class SumoCommand extends Command {
 
@@ -31,25 +30,30 @@ public class SumoCommand extends Command {
             if(args.length == 1) {
                 if (args[0].equalsIgnoreCase("reload")) {
                     Main.getInstance().reloadConfig();
-                    player.sendMessage(printMessage("reload"));
+                    player.sendMessage(printMessage(RELOAD));
                 }
                 else if(args[0].equalsIgnoreCase("join")) {
-                    if(verifyState(LOBBY)){
-                        if(!isInTournament(player)){
-                            if(getTournamentSize()<getTournamentMaxSize()){
-                                addPlayerInTournament(player);
-                                sendMessageToTournament(printMessage("join-tournament").replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("max-slot")));
+                    if(player.hasPermission(joinpermission)){
+                        if(verifyState(LOBBY)){
+                            if(!isInTournament(player)){
+                                if(getTournamentSize()<getTournamentMaxSize()){
+                                    addPlayerInTournament(player);
+                                    sendMessageToTournament(printMessage(TOURNAMENT_JOIN).replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("MAX-SLOT")));
+                                }
+                            }
+                            else{
+                                player.sendMessage(printMessage(INEVENT));
                             }
                         }
+                        else if(verifyState(IN_GAME)){
+                            player.sendMessage(printMessage(STARTED));
+                        }
                         else{
-                            player.sendMessage(printMessage("alreadyin"));
+                            player.sendMessage(printMessage(NO_HOSTED_EVENT));
                         }
                     }
-                    else if(verifyState(IN_GAME)){
-                        player.sendMessage(printMessage("in-game"));
-                    }
                     else{
-                        player.sendMessage(printMessage("noevent"));
+                        player.sendMessage(printMessage(NOPERMISSION));
                     }
                 }
                 else if(args[0].equalsIgnoreCase("host")) {
@@ -58,23 +62,42 @@ public class SumoCommand extends Command {
                             startTournament(player);
                         }
                         else{
-                            player.sendMessage(printMessage("nospawnpointset"));
+                            player.sendMessage(printMessage(NOSPAWNPOINTS));
                         }
                     }
                     else{
-                        player.sendMessage(printMessage("host-permission-message"));
+                        player.sendMessage(printMessage(HOST_NOPERMISSION));
+                    }
+                }
+                else if(args[0].equalsIgnoreCase("spec") || args[0].equalsIgnoreCase("spect") || args[0].equalsIgnoreCase("spectate")) {
+                    if(player.hasPermission(specpermission)){
+                        if(isTournamentStarted()){
+                            if(!isInTournament(player)){
+                                addSpectatorExternal(player);
+                                player.sendMessage(printMessage(SPEC_MESSAGE));
+                            }
+                            else{
+                                player.sendMessage(printMessage(INEVENT));
+                            }
+                        }
+                        else{
+                            player.sendMessage(printMessage(NO_HOSTED_EVENT));
+                        }
+                    }
+                    else{
+                        player.sendMessage(printMessage(NOPERMISSION));
                     }
                 }
                 else if(args[0].equalsIgnoreCase("setlobby")) {
                     if(player.hasPermission(adminpermission)){
                         spawnPoints(playerLocation, "Lobby");
-                        player.sendMessage(printMessage("setlobby"));
+                        player.sendMessage(printMessage(SPAWNPOINT_1));
                     }
                     else{
-                        player.sendMessage(printMessage("noperms"));
+                        player.sendMessage(printMessage(NOPERMISSION));
                     }
                 }
-                else if(args[0].equalsIgnoreCase("forceend")){
+                /*else if(args[0].equalsIgnoreCase("forceend")){
                     if (player.hasPermission(adminpermission)){
                         if(isTournamentStarted()){
                             sendMessageToTournament(printMessage("force-ended").replace("%player%", player.getName()));
@@ -88,6 +111,7 @@ public class SumoCommand extends Command {
                         player.sendMessage(printMessage("noperms"));
                     }
                 }
+                 */
                 else if(args[0].equalsIgnoreCase("test")){
                     player.sendMessage(String.valueOf(isInTournament(player)));
                     player.sendMessage(String.valueOf(isTournamentStarted()));
@@ -98,10 +122,10 @@ public class SumoCommand extends Command {
                 }
                 else{
                     if(player.hasPermission(adminpermission)){
-                        printListMessages("admin-help-command", player);
+                        printListMessages(ADMIN_HELP, player);
                     }
                     else{
-                        printListMessages("help-command", player);
+                        printListMessages(HELP, player);
                     }
                 }
             }
@@ -110,39 +134,39 @@ public class SumoCommand extends Command {
                     if(player.hasPermission(adminpermission)){
                         if(args[1].equalsIgnoreCase("1")){
                             SumoLocationsHandler.spawnPoints(playerLocation, String.valueOf(Integer.parseInt(args[1])));
-                            player.sendMessage(printMessage("spawnpoint1"));
+                            player.sendMessage(printMessage(SPAWNPOINT_1));
                         }
                         else if(args[1].equalsIgnoreCase("2")){
                             SumoLocationsHandler.spawnPoints(playerLocation, String.valueOf(Integer.parseInt(args[1])));
-                            player.sendMessage(printMessage("spawnpoint2"));
+                            player.sendMessage(printMessage(SPAWNPOINT_2));
                         }
                         else if(args[1].equalsIgnoreCase("spec")){
                             SumoLocationsHandler.spawnPoints(playerLocation, args[1]);
-                            player.sendMessage(printMessage("specpoint"));
+                            player.sendMessage(printMessage(SPAWNPOINT_SPEC));
                         }
                         else{
-                            printListMessages("admin-help-command", player);
+                            printListMessages(ADMIN_HELP, player);
                         }
                     }
                     else{
-                        player.sendMessage(printMessage("noperms"));
+                        player.sendMessage(printMessage(NOPERMISSION));
                     }
                 }
                 else{
                     if(player.hasPermission(adminpermission)){
-                        printListMessages("admin-help-command", player);
+                        printListMessages(ADMIN_HELP, player);
                     }
                     else{
-                        player.sendMessage(printMessage("noperms"));
+                        player.sendMessage(printMessage(NOPERMISSION));
                     }
                 }
             }
             else{
                 if(player.hasPermission(adminpermission)){
-                    printListMessages("admin-help-command", player);
+                    printListMessages(ADMIN_HELP, player);
                 }
                 else{
-                    printListMessages("help-command", player);
+                    printListMessages(HELP, player);
                 }
             }
         }

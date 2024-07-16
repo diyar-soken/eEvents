@@ -1,6 +1,5 @@
 package me.diyar.ezarevents.events;
 
-import me.diyar.ezarevents.utils.MatchState;
 import me.diyar.ezarevents.utils.MessagesUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -10,6 +9,7 @@ import static me.diyar.ezarevents.handlers.SumoCountdowns.*;
 import static me.diyar.ezarevents.handlers.SumoHandler.*;
 import static me.diyar.ezarevents.utils.MatchState.changeState;
 import static me.diyar.ezarevents.utils.MatchState.state.*;
+import static me.diyar.ezarevents.utils.MessagesUtil.STARTED;
 
 public class SumoStart {
 
@@ -21,7 +21,7 @@ public class SumoStart {
             countdownTournament();
         }
         else{
-            player.sendMessage(MessagesUtil.printMessage("already-on"));
+            player.sendMessage(MessagesUtil.printMessage(STARTED));
         }
     }
 

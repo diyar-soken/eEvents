@@ -24,8 +24,7 @@ import static me.diyar.ezarevents.Main.quitted;
 import static me.diyar.ezarevents.events.SumoStart.startMatch;
 import static me.diyar.ezarevents.handlers.SumoHandler.*;
 import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getSpawnPointLocation;
-import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
-import static me.diyar.ezarevents.utils.MessagesUtil.sendMessageToTournament;
+import static me.diyar.ezarevents.utils.MessagesUtil.*;
 import static me.diyar.ezarevents.utils.PermissionUtils.adminpermission;
 
 public class listener implements Listener {
@@ -39,14 +38,14 @@ public class listener implements Listener {
                     addPlayerQuitted(player);
                     Player playerMatchWinner = getPlayerFighting();
                     if(getTournamentSize()<2){
-                        sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", winner().getName()));
-                        Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
-                        Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
-                        Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
+                        sendMessageToTournament(printMessage(TOURNAMENT_ELIMINATION).replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
+                        for(int i = 0; i<Main.getInstance().getConfig().getInt("WINNER-MESSAGE-TIMES"); i++){
+                            Bukkit.broadcastMessage(printMessage(WINNER).replace("%winner%", playerMatchWinner.getName()));
+                        }
                         cancelTournament();
                     }
                     else{
-                        sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
+                        sendMessageToTournament(printMessage(TOURNAMENT_ELIMINATION).replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
                         removePlayerInFight(playerMatchWinner);
                         clearPlayerFighting();
                         resetPlayerInMatch();
@@ -81,15 +80,14 @@ public class listener implements Listener {
                         addSpectator(player);
                         Player playerMatchWinner = getPlayerFighting();
                         if(getTournamentSize()<2){
-                            Player winner = winner();
-                            sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", winner.getName()));
-                            for(int i = 0; i<Main.getInstance().getConfig().getInt("winner-repeat-time"); i++){
-                                Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
+                            sendMessageToTournament(printMessage(TOURNAMENT_ELIMINATION).replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
+                            for(int i = 0; i<Main.getInstance().getConfig().getInt("WINNER-MESSAGE-TIMES"); i++){
+                                Bukkit.broadcastMessage(printMessage(WINNER).replace("%winner%", playerMatchWinner.getName()));
                             }
                             cancelTournament();
                         }
                         else{
-                            sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
+                            sendMessageToTournament(printMessage(TOURNAMENT_ELIMINATION).replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
                             removePlayerInFight(playerMatchWinner);
                             clearPlayerFighting();
                             resetPlayerInMatch();
@@ -210,7 +208,7 @@ public class listener implements Listener {
         if(isTournamentStarted()){
             if(isInTournament(player)){
                 if(event.hasItem()){
-                    if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(printMessage("leaveitem"))){
+                    if(player.getItemInHand().getItemMeta().getDisplayName().equalsIgnoreCase(printMessage(LEAVEITEM_DISPLAYNAME))){
                         if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_AIR)){
                             leaveTournament(player);
                         }

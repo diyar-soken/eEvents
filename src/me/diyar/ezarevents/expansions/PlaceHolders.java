@@ -1,8 +1,5 @@
 package me.diyar.ezarevents.expansions;
 
-import me.clip.placeholderapi.PlaceholderAPI;
-import me.clip.placeholderapi.PlaceholderAPIPlugin;
-import me.clip.placeholderapi.PlaceholderHook;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import me.diyar.ezarevents.Main;
 import org.bukkit.OfflinePlayer;
@@ -13,6 +10,14 @@ import static me.diyar.ezarevents.handlers.SumoHandler.*;
 import static me.diyar.ezarevents.utils.MatchState.getState;
 
 public class PlaceHolders extends PlaceholderExpansion {
+
+    private static final String LOBBY = Main.getInstance().getConfig().getString("PLACEHOLDERS.LOBBY");
+    private static final String IN_GAME = Main.getInstance().getConfig().getString("PLACEHOLDERS.IN-GAME");
+    private static final String STARTING = Main.getInstance().getConfig().getString("PLACEHOLDERS.STARTING");
+    private static final String FIGHTING = Main.getInstance().getConfig().getString("PLACEHOLDERS.FIGHTING");
+    private static final String SPECTATING = Main.getInstance().getConfig().getString("PLACEHOLDERS.SPECTATING");
+    private static final String END = Main.getInstance().getConfig().getString("PLACEHOLDERS.END");
+
     @Override
     public @NotNull String getIdentifier() {
         return "sumo";
@@ -45,22 +50,22 @@ public class PlaceHolders extends PlaceholderExpansion {
         if(params.equalsIgnoreCase("state")) {
             String stato = null;
             if(getState().equalsIgnoreCase("LOBBY")){
-                stato = Main.getInstance().getConfig().getString("placeholders.lobby");
+                stato = LOBBY;
             }
             if(getState().equalsIgnoreCase("IN_GAME")){
-                stato = Main.getInstance().getConfig().getString("placeholders.in-game");
+                stato = IN_GAME;
             }
             if(getState().equalsIgnoreCase("END")){
-                stato = Main.getInstance().getConfig().getString("placeholders.end");
+                stato = END;
             }
             if(isInMatch((Player) player)){
-                stato = Main.getInstance().getConfig().getString("placeholders.starting");
+                stato = STARTING;
             }
             if(isFighting((Player) player)){
-                stato = Main.getInstance().getConfig().getString("placeholders.fighting");
+                stato = FIGHTING;
             }
             if(isInSpectatorMode((Player) player)){
-                stato = Main.getInstance().getConfig().getString("placeholders.spectating");
+                stato = SPECTATING;
             }
             return stato;
         }

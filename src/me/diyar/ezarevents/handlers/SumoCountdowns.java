@@ -15,38 +15,27 @@ import static me.diyar.ezarevents.utils.MessagesUtil.*;
 
 public class SumoCountdowns {
 
-    public static void countdownTournamentBroadcast(int time){
-        CountdownTimer timer = new CountdownTimer(Main.getInstance(),Main.getInstance().getConfig().getInt("broadcast-hosted-time"),
-                () -> broadcastMessageTime(time),
-                () -> {},
-                (t) -> {}
-
-        );
-
-        timer.scheduleTimer();
-    }
-
     public static void countdownTournament(){
         CountdownTimer timer = new CountdownTimer(Main.getInstance(),
-                Main.getInstance().getConfig().getInt("time"),
-                () -> broadcastMessageTime(Main.getInstance().getConfig().getInt("time")),
+                Main.getInstance().getConfig().getInt("TOURNAMENT-COUNTDOWN"),
+                () -> broadcastMessageTime(Main.getInstance().getConfig().getInt("TOURNAMENT-COUNTDOWN")),
                 () -> {
                     if (getTournamentSize()>=2) {
                         changeState(IN_GAME);
                         startMatch();
                     }
                     else{
-                        sendMessageToTournament(printMessage("not-enough-players"));
+                        sendMessageToTournament(printMessage(NO_ENOUGH_PLAYERS));
                         cancelTournament();
                     }
                 },
                 (t) -> {
-                    List<Integer> list = Main.getInstance().getConfig().getIntegerList("times");
+                    List<Integer> list = Main.getInstance().getConfig().getIntegerList("TOURNAMENT-COUNTDOWN-FILTER");
                     if(list.contains(t.getSecondsLeft())){
-                        if(t.getSecondsLeft()>=(Main.getInstance().getConfig().getInt("broadcast-hosted-time")*2)){
-                            countdownTournamentBroadcast(t.getSecondsLeft());
+                        if(t.getSecondsLeft()>=(Main.getInstance().getConfig().getInt("HOSTED-MESSAGE-DELAY")*2)){
+                            broadcastMessageTime(t.getSecondsLeft());
                         }
-                        sendMessageToTournament(printMessage("countdown-message").replace("%time%", String.valueOf(t.getSecondsLeft())));
+                        sendMessageToTournament(printMessage(TOURNAMENT_COUNTDOWN_MESSAGE).replace("%time%", String.valueOf(t.getSecondsLeft())));
                     }
                 }
 
@@ -56,12 +45,12 @@ public class SumoCountdowns {
     }
 
     public static void countdownPreMatch(Player player1, Player player2){
-        CountdownTimer timer = new CountdownTimer(Main.getInstance(), Main.getInstance().getConfig().getInt("prematch-countdown"),
+        CountdownTimer timer = new CountdownTimer(Main.getInstance(), Main.getInstance().getConfig().getInt("PREMATCH-COUNTDOWN"),
                 () -> {
-                    sendMessageToTournament(printMessage("prematch-message"));
+                    sendMessageToTournament(printMessage(PREMATCH_MESSAGE));
                 },
                 () -> {
-                    matchStartedMessage("match-info",player1,player2);
+                    matchStartedMessage(MATCH_INFO_MESSAGE,player1,player2);
                     addPlayerInMatch(player1,player2);
                     countdownMatch(player1,player2);
                 },
@@ -73,15 +62,15 @@ public class SumoCountdowns {
     }
 
     public static void countdownMatch(Player player1, Player player2){
-        CountdownTimer timer = new CountdownTimer(Main.getInstance(), Main.getInstance().getConfig().getInt("match-countdown"),
+        CountdownTimer timer = new CountdownTimer(Main.getInstance(), Main.getInstance().getConfig().getInt("MATCH-COUNTDOWN"),
                 () -> {},
                 () -> {
                     addPlayerFighting(player1,player2);
                     resetPlayerInMatch();
-                    sendMessageToFighters(printMessage("match-started"));
+                    sendMessageToFighters(printMessage(MATCH_STARTED_MESSAGE));
                 },
                 (t) -> {
-                    sendMessageToInMatch(printMessage("match-countdown-message").replace("%time%", String.valueOf(t.getSecondsLeft())));
+                    sendMessageToInMatch(printMessage(MATCH_COUNTDOWN_MESSAGE).replace("%time%", String.valueOf(t.getSecondsLeft())));
                 }
 
         );

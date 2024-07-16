@@ -9,6 +9,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.HashMap;
 
+import static me.diyar.ezarevents.utils.MessagesUtil.LEAVEITEM_DISPLAYNAME;
 import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
 
 public class SumoInventoryHandler {
@@ -22,9 +23,9 @@ public class SumoInventoryHandler {
         playerInventory.setArmorContents(null);
         ItemStack leaveEvent = new ItemStack(Material.NETHER_STAR, 1);
         ItemMeta leaveEventMeta = leaveEvent.getItemMeta();
-        leaveEventMeta.setDisplayName(printMessage("leaveitem"));
+        leaveEventMeta.setDisplayName(printMessage(LEAVEITEM_DISPLAYNAME));
         leaveEvent.setItemMeta(leaveEventMeta);
-        playerInventory.setItem(Main.getInstance().getConfig().getInt("leaveitem-position")-1,leaveEvent);
+        playerInventory.setItem(Main.getInstance().getConfig().getInt("LEAVE-ITEM-POSITION")-1,leaveEvent);
     }
 
     public static void memorizeInventory(Player player){

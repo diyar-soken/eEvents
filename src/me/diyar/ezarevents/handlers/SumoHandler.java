@@ -12,10 +12,9 @@ import java.util.concurrent.ThreadLocalRandom;
 import static me.diyar.ezarevents.Main.*;
 import static me.diyar.ezarevents.handlers.SumoInventoryHandler.*;
 import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getSpawnPointLocation;
-import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
-import static me.diyar.ezarevents.utils.MessagesUtil.sendMessageToTournament;
 import static me.diyar.ezarevents.utils.MatchState.*;
 import static me.diyar.ezarevents.utils.MatchState.state.*;
+import static me.diyar.ezarevents.utils.MessagesUtil.*;
 
 public class SumoHandler {
     public static UUID hoster;
@@ -58,7 +57,7 @@ public class SumoHandler {
     }
 
     public static int getTournamentMaxSize(){
-        return Main.getInstance().getConfig().getInt("max-slot");
+        return Main.getInstance().getConfig().getInt("MAX-SLOT");
     }
 
     public static int getTournamentSize(){
@@ -95,13 +94,13 @@ public class SumoHandler {
     }
 
     public static void leaveTournament(Player player){
-        player.sendMessage(printMessage("leave-message"));
+        player.sendMessage(printMessage(TOURNAMENT_LEAVE_MESSAGE));
         removePlayerInTournament(player);
-        sendMessageToTournament(printMessage("leave-tournament").replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("max-slot")));
+        sendMessageToTournament(printMessage(TOURNAMENT_QUIT).replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("MAX-SLOT")));
     }
 
     public static void leaveTournamentOffline(Player player){
-        sendMessageToTournament(printMessage("leave-tournament").replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("max-slot")));
+        sendMessageToTournament(printMessage(TOURNAMENT_QUIT).replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("MAX-SLOT")));
     }
 
     ///////////
@@ -208,6 +207,16 @@ public class SumoHandler {
         inGame.remove(player.getUniqueId());
         fighting.remove(player.getUniqueId());
         inMatch.remove(player.getUniqueId());
+        spectating.add(player.getUniqueId());
+        Location loc = SumoLocationsHandler.getSpawnPointLocation("spec");
+        giveTournamentInventory(player);
+        player.setFoodLevel(20);
+        player.setHealth(20);
+        player.teleport(loc);
+    }
+
+    public static void addSpectatorExternal(Player player){
+        memorizeInventory(player);
         spectating.add(player.getUniqueId());
         Location loc = SumoLocationsHandler.getSpawnPointLocation("spec");
         giveTournamentInventory(player);

@@ -2,7 +2,3 @@ name: eEvents
 version: beta
 author: Diyar
 main: me.diyar.ezarevents.Main
-depend:
-  - PlaceholderAPI
-softdepend:
-  - TAB
