@@ -73,6 +73,12 @@ public class PlaceHolders extends PlaceholderExpansion {
         if(params.equalsIgnoreCase("fighting")) {
             return String.valueOf(areFighting());
         }
+        if(params.equalsIgnoreCase("player1_ping")) {
+            return String.valueOf(playerPing(getPlayerFightingByPos(0)));
+        }
+        if(params.equalsIgnoreCase("player2_ping")) {
+            return String.valueOf(playerPing(getPlayerFightingByPos(1)));
+        }
 
         return null;
     }

@@ -13,11 +13,13 @@ import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
 
 public class SumoInventoryHandler {
     public static HashMap<Player, ItemStack[]> itemhash = new HashMap<Player, ItemStack[]>();
+    public static HashMap<Player, ItemStack[]> armorhash = new HashMap<Player, ItemStack[]>();
     // UTIL INVENTORY MANAGER
 
     public static void giveTournamentInventory(Player player){
         PlayerInventory playerInventory = player.getInventory();
         playerInventory.clear();
+        playerInventory.setArmorContents(null);
         ItemStack leaveEvent = new ItemStack(Material.NETHER_STAR, 1);
         ItemMeta leaveEventMeta = leaveEvent.getItemMeta();
         leaveEventMeta.setDisplayName(printMessage("leaveitem"));
@@ -27,7 +29,9 @@ public class SumoInventoryHandler {
 
     public static void memorizeInventory(Player player){
         ItemStack[] playerinv = player.getInventory().getContents();
+        ItemStack[] playerInvArmor = player.getInventory().getArmorContents();
         itemhash.put(player, playerinv);
+        armorhash.put(player, playerInvArmor);
     }
 
     public static void restoreInventory(Player player){
@@ -40,5 +44,10 @@ public class SumoInventoryHandler {
                 }
             }
         }
+        if(armorhash.containsKey(player)){
+            ItemStack[] armor = armorhash.get(player);
+            player.getInventory().setArmorContents(armor);
+        }
+
     }
 }

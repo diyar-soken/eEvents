@@ -21,7 +21,6 @@ import static me.diyar.ezarevents.utils.MatchState.changeState;
 public final class Main extends JavaPlugin {
 
     public static HashMap<String, String> EventState = new HashMap<>();
-    public static HashMap<String, String> PlayerState = new HashMap<>();
     public static ArrayList<UUID> inGame = new ArrayList<>();
     public static ArrayList<UUID> inMatch = new ArrayList<>();
     public static ArrayList<UUID> fighting = new ArrayList<>();

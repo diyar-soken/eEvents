@@ -88,6 +88,14 @@ public class SumoCommand extends Command {
                         player.sendMessage(printMessage("noperms"));
                     }
                 }
+                else if(args[0].equalsIgnoreCase("test")){
+                    player.sendMessage(String.valueOf(isInTournament(player)));
+                    player.sendMessage(String.valueOf(isTournamentStarted()));
+                    player.sendMessage(String.valueOf(getState()));
+                    player.sendMessage(String.valueOf(getPlayerFighting()));
+                    player.sendMessage(String.valueOf(getHoster()));
+                    player.sendMessage(String.valueOf(areFighting()));
+                }
                 else{
                     if(player.hasPermission(adminpermission)){
                         printListMessages("admin-help-command", player);

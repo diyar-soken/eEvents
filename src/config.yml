@@ -1,3 +1,7 @@
+# EzarEvents by Diyar
+# Website: https://www.ezar.it
+# Wiki: https://wiki.ezar.it/EzarEvents/
+
 admin-permission: "ezar.sumo"
 host-permission: "ezar.sumo.host"
 max-slot: 32
@@ -16,6 +20,7 @@ alreadyin: "&cYou are already in the sumo event."
 eliminated: "&cYou have been eliminated."
 broadcastElimination: "&e(Event) &c%looser% &7has been eliminated by &a%winner%"
 winner: "&e(Event) &aWinner: %winner%"
+winner-repeat-time: 3
 join-tournament: "&a%player% &ejoined the tournament. (&9%inTournament%&e/&9%maxTournament%&e)"
 in-game: "&eThe event is started."
 not-enough-players: "&cNo enough players in the event."
@@ -56,3 +61,5 @@ placeholders:
   spectating: "Spectating"
   end: "Ending"
 quit-fighting: "%player% just quitted during the event. Has been eliminated from the event."
+
+#locations#

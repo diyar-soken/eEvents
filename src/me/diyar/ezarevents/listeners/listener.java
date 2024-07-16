@@ -34,22 +34,28 @@ public class listener implements Listener {
     public void onPlayerQuitEvent(PlayerQuitEvent event){
         Player player = event.getPlayer();
         if(isTournamentStarted()){
-            if(isInTournament(player) || isFighting(player) || isInMatch(player) || isInSpectatorMode(player)){
-                Player playerMatchWinner = getPlayerFighting();
-                removePlayerInFight(playerMatchWinner);
-                clearPlayerFighting();
-                resetPlayerInMatch();
-                addPlayerQuitted(player);
-                if(getTournamentSize()<2){
-                    sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", winner().getName()));
-                    Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
-                    Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
-                    Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
-                    cancelTournament();
+            if(isInTournament(player)){
+                if(isFighting(player) || isInMatch(player)){
+                    addPlayerQuitted(player);
+                    Player playerMatchWinner = getPlayerFighting();
+                    if(getTournamentSize()<2){
+                        sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", winner().getName()));
+                        Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
+                        Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
+                        Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner().getName()));
+                        cancelTournament();
+                    }
+                    else{
+                        sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
+                        removePlayerInFight(playerMatchWinner);
+                        clearPlayerFighting();
+                        resetPlayerInMatch();
+                        startMatch();
+                    }
                 }
                 else{
-                    sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
-                    startMatch();
+                    addPlayerQuitted(player);
+                    leaveTournamentOffline(player);
                 }
             }
         }
@@ -72,21 +78,21 @@ public class listener implements Listener {
             if(isInTournament(player)){
                 if(isFighting(player)){
                     if(material == Material.STATIONARY_WATER || material == Material.WATER){
-                        Player playerMatchWinner = getPlayerFighting();
-                        removePlayerInFight(playerMatchWinner);
-                        clearPlayerFighting();
-                        resetPlayerInMatch();
                         addSpectator(player);
+                        Player playerMatchWinner = getPlayerFighting();
                         if(getTournamentSize()<2){
                             Player winner = winner();
                             sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", winner.getName()));
-                            Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
-                            Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
-                            Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
+                            for(int i = 0; i<Main.getInstance().getConfig().getInt("winner-repeat-time"); i++){
+                                Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
+                            }
                             cancelTournament();
                         }
                         else{
                             sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
+                            removePlayerInFight(playerMatchWinner);
+                            clearPlayerFighting();
+                            resetPlayerInMatch();
                             startMatch();
                         }
                     }
@@ -150,9 +156,6 @@ public class listener implements Listener {
                 else if(isInSpectatorMode(player)){
                     event.setCancelled(true);
                 }
-            }
-            else{
-                event.setCancelled(true);
             }
         }
     }

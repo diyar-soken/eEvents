@@ -3,6 +3,7 @@ package me.diyar.ezarevents.handlers;
 import me.diyar.ezarevents.Main;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_8_R3.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -35,7 +36,7 @@ public class SumoHandler {
     }
 
     public static void addPlayerInTournament(Player player){
-        changeState(IN_GAME);
+        inGame.add(player.getUniqueId());
         memorizeInventory(player);
         giveTournamentInventory(player);
         Location loc = SumoLocationsHandler.getSpawnPointLocation("spec");
@@ -96,6 +97,10 @@ public class SumoHandler {
     public static void leaveTournament(Player player){
         player.sendMessage(printMessage("leave-message"));
         removePlayerInTournament(player);
+        sendMessageToTournament(printMessage("leave-tournament").replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("max-slot")));
+    }
+
+    public static void leaveTournamentOffline(Player player){
         sendMessageToTournament(printMessage("leave-tournament").replace("%player%", player.getName()).replace("%inTournament%", String.valueOf(getTournamentSize())).replace("%maxTournament%", printMessage("max-slot")));
     }
 
@@ -164,12 +169,21 @@ public class SumoHandler {
     }
 
     public static Player getPlayerFightingByPos(int num){
-        UUID player = inMatch.get(num);
+        UUID player = null;
+        if(inMatch.isEmpty()){
+            player = fighting.get(num);
+        }
+        else{
+            player = inMatch.get(num);
+        }
         return Bukkit.getPlayer(player);
     }
 
     public static boolean areFighting(){
-        return fighting.isEmpty();
+        if(!fighting.isEmpty()){
+            return true;
+        }
+        return !inMatch.isEmpty();
     }
 
     public static void clearPlayerFighting(){
@@ -226,6 +240,10 @@ public class SumoHandler {
     }
 
     // UTIL PLAYERS //
+
+    public static int playerPing(Player player){
+        return ((CraftPlayer)player).getHandle().ping;
+    }
 
     public static UUID randomPlayer() {
         return inGame.get(ThreadLocalRandom.current().nextInt(0, getTournamentSize()));
