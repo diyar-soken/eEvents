@@ -24,7 +24,7 @@ public class SumoHandler {
     ////////////////
 
     public static boolean isInTournament(Player player){
-        return inGame.contains(player.getUniqueId());
+        return inGame.contains(player.getUniqueId()) || spectating.contains(player.getUniqueId());
     }
 
     public static void addPlayerInTournament(Player player){
@@ -32,6 +32,8 @@ public class SumoHandler {
         memorizeInventory(player);
         giveTournamentInventory(player);
         Location loc = SumoLocationsHandler.getSpawnPointLocation("spec");
+        player.setFoodLevel(20);
+        player.setHealth(20);
         player.teleport(loc);
     }
 
@@ -39,8 +41,11 @@ public class SumoHandler {
         inGame.remove(player.getUniqueId());
         fighting.remove(player.getUniqueId());
         inMatch.remove(player.getUniqueId());
+        spectating.remove(player.getUniqueId());
         restoreInventory(player);
         Location loc = getSpawnPointLocation("Lobby");
+        player.setFoodLevel(20);
+        player.setHealth(20);
         player.teleport(loc);
     }
 
@@ -68,9 +73,15 @@ public class SumoHandler {
             restoreInventory(player);
             player.teleport(getSpawnPointLocation("Lobby"));
         }
+        for (UUID uuid : spectating) {
+            Player player = Bukkit.getPlayer(uuid);
+            restoreInventory(player);
+            player.teleport(getSpawnPointLocation("Lobby"));
+        }
         inGame.clear();
         inMatch.clear();
         fighting.clear();
+        spectating.clear();
         hoster = null;
         changeState(END);
     }
@@ -145,6 +156,15 @@ public class SumoHandler {
         return player;
     }
 
+    public static Player getPlayerFightingByPos(int num){
+        UUID player = inMatch.get(num);
+        return Bukkit.getPlayer(player);
+    }
+
+    public static boolean areFighting(){
+        return fighting.isEmpty();
+    }
+
     public static void clearPlayerFighting(){
         fighting.clear();
     }
@@ -158,6 +178,34 @@ public class SumoHandler {
 
     public static Player getHoster(){
         return Bukkit.getPlayer(hoster);
+    }
+
+    ////////////
+    // SPECTATOR //
+    ////////////
+    public static void addSpectator(Player player){
+        inGame.remove(player.getUniqueId());
+        fighting.remove(player.getUniqueId());
+        inMatch.remove(player.getUniqueId());
+        spectating.add(player.getUniqueId());
+        Location loc = SumoLocationsHandler.getSpawnPointLocation("spec");
+        giveTournamentInventory(player);
+        player.setFoodLevel(20);
+        player.setHealth(20);
+        player.teleport(loc);
+    }
+
+    public static void removeSpectator(Player player){
+        inGame.remove(player.getUniqueId());
+        fighting.remove(player.getUniqueId());
+        inMatch.remove(player.getUniqueId());
+        spectating.remove(player.getUniqueId());
+        Location loc = SumoLocationsHandler.getSpawnPointLocation("Lobby");
+        player.teleport(loc);
+    }
+
+    public static boolean isInSpectatorMode(Player player){
+        return spectating.contains(player.getUniqueId());
     }
 
     // UTIL PLAYERS //

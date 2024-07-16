@@ -48,3 +48,10 @@ match-countdown: 3
 match-countdown-message: "&eThe match starts in &a%time%&e..."
 match-started: "&aThe match has started good luck!"
 force-ended: "&e(Event) &a%player% &7just force-ended the tournament."
+placeholders:
+  lobby: "Waiting.."
+  in-game: "In game.."
+  starting: "Starting.."
+  fighting: "Fighting.."
+  spectating: "Spectating"
+  end: "Ending"

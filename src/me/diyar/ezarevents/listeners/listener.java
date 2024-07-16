@@ -26,6 +26,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import static me.diyar.ezarevents.events.SumoStart.startMatch;
 import static me.diyar.ezarevents.handlers.SumoHandler.*;
+import static me.diyar.ezarevents.handlers.SumoInventoryHandler.giveTournamentInventory;
 import static me.diyar.ezarevents.handlers.SumoLocationsHandler.getSpawnPointLocation;
 import static me.diyar.ezarevents.utils.MatchState.isTournamentStarted;
 import static me.diyar.ezarevents.utils.MessagesUtil.printMessage;
@@ -55,20 +56,21 @@ public class listener implements Listener {
             if(isInTournament(player)){
                 if(isFighting(player)){
                     if(material == Material.STATIONARY_WATER || material == Material.WATER){
-                        removePlayerInTournament(player);
                         Player playerMatchWinner = getPlayerFighting();
-                        sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
                         removePlayerInFight(playerMatchWinner);
                         clearPlayerFighting();
                         resetPlayerInMatch();
+                        addSpectator(player);
                         if(getTournamentSize()<2){
                             Player winner = winner();
+                            sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", winner.getName()));
                             Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
                             Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
                             Bukkit.broadcastMessage(printMessage("winner").replace("%winner%", winner.getName()));
                             cancelTournament();
                         }
                         else{
+                            sendMessageToTournament(printMessage("broadcastElimination").replace("%looser%", player.getName()).replace("%winner%", playerMatchWinner.getName()));
                             startMatch();
                         }
                     }
@@ -80,7 +82,7 @@ public class listener implements Listener {
     @EventHandler
     public void onInventoryDragEvent(InventoryDragEvent event){
         Player player = (Player) event.getWhoClicked();
-        if(isInTournament(player)){
+        if(isInTournament(player) || isInSpectatorMode(player)){
             event.setCancelled(true);
         }
     }
@@ -89,7 +91,7 @@ public class listener implements Listener {
     public void onBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
         if(isTournamentStarted()){
-            if(isInTournament(player) || isFighting(player) || isInMatch(player)){
+            if(isInTournament(player) || isFighting(player) || isInMatch(player) || isInSpectatorMode(player)){
                 if (!player.hasPermission(adminpermission) || player.getGameMode() != GameMode.CREATIVE){
                     event.setCancelled(true);
                 }
@@ -101,7 +103,7 @@ public class listener implements Listener {
     public void onPlace(BlockPlaceEvent event) {
         Player player = event.getPlayer();
         if(isTournamentStarted()){
-            if(isInTournament(player) || isFighting(player) || isInMatch(player)){
+            if(isInTournament(player) || isFighting(player) || isInMatch(player) || isInSpectatorMode(player)){
                 if (!player.hasPermission(adminpermission) || player.getGameMode() != GameMode.CREATIVE){
                     event.setCancelled(true);
                 }
@@ -129,6 +131,9 @@ public class listener implements Listener {
                         event.setCancelled(true);
                     }
                 }
+                else if(isInSpectatorMode(player)){
+                    event.setCancelled(true);
+                }
             }
             else{
                 event.setCancelled(true);
@@ -141,10 +146,9 @@ public class listener implements Listener {
         if (event.getEntity() instanceof Player) {
             Player player = (Player) event.getEntity();
             if(isTournamentStarted()){
-                if(isInTournament(player)){
+                if(isInTournament(player) || isInSpectatorMode(player)){
                     if(isFighting(player)){
                         event.setCancelled(false);
-
                     }
                     else if (event.getCause() == EntityDamageEvent.DamageCause.FALL) {
                         event.setCancelled(true);
@@ -161,8 +165,9 @@ public class listener implements Listener {
     public void onFoodLevelChange(FoodLevelChangeEvent event) {
         Player player = (Player) event.getEntity();
         if(isTournamentStarted()){
-            if(isInTournament(player)){
+            if(isInTournament(player) || isInSpectatorMode(player)){
                 event.setFoodLevel(20);
+                player.setHealth(20);
                 Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> event.setCancelled(true), 1L);
             }
         }
@@ -172,7 +177,7 @@ public class listener implements Listener {
     public void onClickInv(InventoryClickEvent event) {
         Player player = (Player) event.getWhoClicked();
         if(isTournamentStarted()){
-            if(isInTournament(player)){
+            if(isInTournament(player) || isInSpectatorMode(player)){
                 if(!player.hasPermission(adminpermission) || !player.getGameMode().equals(GameMode.CREATIVE)){
                     event.setCancelled(true);
                 }
@@ -200,7 +205,7 @@ public class listener implements Listener {
     public void onDrop(PlayerDropItemEvent event) {
         Player player = event.getPlayer();
         if(isTournamentStarted()){
-            if(isInTournament(player)){
+            if(isInTournament(player) || isInSpectatorMode(player)){
                 if(!player.hasPermission(adminpermission) || !player.getGameMode().equals(GameMode.CREATIVE)){
                     event.setCancelled(true);
                 }
@@ -211,7 +216,7 @@ public class listener implements Listener {
     @EventHandler
     public void onPlayerInMatchMoveEvent(PlayerMoveEvent event){
         Player player = event.getPlayer();
-        if(isInTournament(player)){
+        if(isInTournament(player) || isInSpectatorMode(player)){
             if(isInMatch(player)){
                 Location to = event.getTo();
                 Location from = event.getFrom();

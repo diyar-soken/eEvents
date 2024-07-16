@@ -1,5 +1,7 @@
 package me.diyar.ezarevents;
 
+import io.github.thatkawaiisam.assemble.Assemble;
+import io.github.thatkawaiisam.assemble.AssembleAdapter;
 import lombok.Getter;
 import me.diyar.ezarevents.commands.SumoCommand;
 import me.diyar.ezarevents.listeners.listener;
@@ -14,6 +16,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.UUID;
 
+import static me.diyar.ezarevents.expansions.PlaceHolders.registerHook;
 import static me.diyar.ezarevents.utils.MatchState.changeState;
 
 @Getter
@@ -23,6 +26,7 @@ public final class Main extends JavaPlugin {
     public static ArrayList<UUID> inGame = new ArrayList<>();
     public static ArrayList<UUID> inMatch = new ArrayList<>();
     public static ArrayList<UUID> fighting = new ArrayList<>();
+    public static ArrayList<UUID> spectating = new ArrayList<>();
 
     @Getter
     private static Main instance;
@@ -35,6 +39,7 @@ public final class Main extends JavaPlugin {
     @Override
     public void onEnable(){
         instance = this;
+        registerHook();
         registerConfig();
         registerCommands();
         registerListeners();

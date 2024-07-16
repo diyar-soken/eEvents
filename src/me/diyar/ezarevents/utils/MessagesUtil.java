@@ -29,6 +29,10 @@ public class MessagesUtil {
             Player player = Bukkit.getPlayer(uuid);
             player.sendMessage(message);
         }
+        for (UUID uuid : spectating) {
+            Player player = Bukkit.getPlayer(uuid);
+            player.sendMessage(message);
+        }
     }
 
     public static void sendMessageToInMatch(String message){
