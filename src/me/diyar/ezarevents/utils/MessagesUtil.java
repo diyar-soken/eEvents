@@ -46,7 +46,7 @@ public class MessagesUtil {
     }
 
     public static void broadcastMessageTime(int time){
-        Bukkit.broadcastMessage(Main.getInstance().getConfig().getString("broadcast-time").replace("&", "§").replace("%host%", getHoster().getName()).replace("%time%", String.valueOf(time)).replace("%join%", "/sumo join"));
+        Bukkit.broadcastMessage(Main.getInstance().getConfig().getString("broadcast-hosted-message").replace("&", "§").replace("%host%", getHoster().getName()).replace("%time%", String.valueOf(time)).replace("%join%", "/sumo join"));
     }
 
     public static void broadcastMessage(String path){

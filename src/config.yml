@@ -23,9 +23,11 @@ leaveitem: "&cLeave event &7(Right click)"
 leave-message: "&cYou just left the tournament."
 leave-tournament: "&a%player% &eleft the tournament. (&9%inTournament%&e/&9%maxTournament%&e)"
 leaveitem-position: 9
+broadcast-hosted-message: "&9%host% &eStarted &aSumo &eevent is going to begun in &b%time%s &7Type &7/sumo join"
+broadcast-hosted-time: 5
+countdown-message: "&e(Event) &7Tournament will begin in &9%time% &7seconds..."
 time: 60
 times: [45, 30, 15, 10, 5, 4, 3, 2, 1]
-broadcast-time: "&9%host% &eStarted &aSumo &eevent is going to begun in &b%time%s &7Type %join%"
 admin-help-command:
   - "&aSumo Admin Help"
   - " &7* &6/sumo setlobby &8- &fSets player lobby/spectating point"

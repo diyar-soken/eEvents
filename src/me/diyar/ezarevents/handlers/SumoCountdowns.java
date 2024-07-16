@@ -15,6 +15,17 @@ import static me.diyar.ezarevents.utils.MessagesUtil.*;
 
 public class SumoCountdowns {
 
+    public static void countdownTournamentBroadcast(int time){
+        CountdownTimer timer = new CountdownTimer(Main.getInstance(),Main.getInstance().getConfig().getInt("broadcast-hosted-time"),
+                () -> broadcastMessageTime(time),
+                () -> {},
+                (t) -> {}
+
+        );
+
+        timer.scheduleTimer();
+    }
+
     public static void countdownTournament(){
         CountdownTimer timer = new CountdownTimer(Main.getInstance(),
                 Main.getInstance().getConfig().getInt("time"),
@@ -25,15 +36,17 @@ public class SumoCountdowns {
                         startMatch();
                     }
                     else{
-                        broadcastMessage("not-enough-players");
+                        sendMessageToTournament(printMessage("not-enough-players"));
                         cancelTournament();
                     }
                 },
                 (t) -> {
                     List<Integer> list = Main.getInstance().getConfig().getIntegerList("times");
-
                     if(list.contains(t.getSecondsLeft())){
-                        broadcastMessageTime(t.getSecondsLeft());
+                        if(t.getSecondsLeft()>=(Main.getInstance().getConfig().getInt("broadcast-hosted-time")*2)){
+                            countdownTournamentBroadcast(t.getSecondsLeft());
+                        }
+                        sendMessageToTournament(printMessage("countdown-message").replace("%time%", String.valueOf(t.getSecondsLeft())));
                     }
                 }
 
