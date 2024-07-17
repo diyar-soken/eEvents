@@ -1,0 +1,17 @@
+SCOREBOARD:
+  TITLE: "&d&lEZAR &7[&aEU&7]"
+  LOBBY:
+    - "&7&m--------------------"
+    - "&5Event &7(Sumo)"
+    - "&d* &fPlayers&7: <players_inTournament>/<tournament_size>"
+    - "&d* &fState&7: <sumo_state>"
+    - "&7&m--------------------"
+  FIGHTING:
+    - "&7&m--------------------"
+    - "&5Event &7(Sumo)"
+    - "&d* &fPlayers&7: <players_inTournament>/<tournament_size>"
+    - "&d* &fState&7: <sumo_state>"
+    - "&7&m--------------------"
+    - "&d<sumo_player_1> &fvs &d<sumo_player_2>"
+    - "&d(&5<sumo_player_1_ping>ms&d) &fvs &d(&5<sumo_player_2_ping>ms&d)"
+    - "&7&m--------------------"

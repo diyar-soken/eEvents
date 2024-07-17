@@ -11,11 +11,11 @@ import static me.diyar.ezarevents.utils.MatchState.getState;
 
 public class PlaceHolders extends PlaceholderExpansion {
 
-    private static final String LOBBY = Main.getInstance().getConfig().getString("PLACEHOLDERS.LOBBY");
-    private static final String IN_GAME = Main.getInstance().getConfig().getString("PLACEHOLDERS.IN-GAME");
-    private static final String STARTING = Main.getInstance().getConfig().getString("PLACEHOLDERS.STARTING");
-    private static final String FIGHTING = Main.getInstance().getConfig().getString("PLACEHOLDERS.FIGHTING");
-    private static final String SPECTATING = Main.getInstance().getConfig().getString("PLACEHOLDERS.SPECTATING");
+    public static final String LOBBY = Main.getInstance().getConfig().getString("PLACEHOLDERS.LOBBY");
+    public static final String IN_GAME = Main.getInstance().getConfig().getString("PLACEHOLDERS.IN-GAME");
+    public static final String STARTING = Main.getInstance().getConfig().getString("PLACEHOLDERS.STARTING");
+    public static final String FIGHTING = Main.getInstance().getConfig().getString("PLACEHOLDERS.FIGHTING");
+    public static final String SPECTATING = Main.getInstance().getConfig().getString("PLACEHOLDERS.SPECTATING");
     private static final String END = Main.getInstance().getConfig().getString("PLACEHOLDERS.END");
 
     @Override

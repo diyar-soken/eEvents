@@ -30,6 +30,7 @@ public class SumoCommand extends Command {
             if(args.length == 1) {
                 if (args[0].equalsIgnoreCase("reload")) {
                     Main.getInstance().reloadConfig();
+                    Main.getInstance().saveDesign();
                     player.sendMessage(printMessage(RELOAD));
                 }
                 else if(args[0].equalsIgnoreCase("join")) {
