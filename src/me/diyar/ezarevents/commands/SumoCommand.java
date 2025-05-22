@@ -98,10 +98,10 @@ public class SumoCommand extends Command {
                         player.sendMessage(printMessage(NOPERMISSION));
                     }
                 }
-                /*else if(args[0].equalsIgnoreCase("forceend")){
+                else if(args[0].equalsIgnoreCase("stop")){
                     if (player.hasPermission(adminpermission)){
                         if(isTournamentStarted()){
-                            sendMessageToTournament(printMessage("force-ended").replace("%player%", player.getName()));
+                            sendMessageToTournament(printMessage(TOURNAMENT_STOP_MESSAGE).replace("%player%", player.getName()));
                             cancelTournament();
                         }
                         else{
@@ -112,7 +112,6 @@ public class SumoCommand extends Command {
                         player.sendMessage(printMessage("noperms"));
                     }
                 }
-                 */
                 else if(args[0].equalsIgnoreCase("test")){
                     player.sendMessage(String.valueOf(isInTournament(player)));
                     player.sendMessage(String.valueOf(isTournamentStarted()));

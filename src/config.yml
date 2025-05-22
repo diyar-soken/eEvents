@@ -4,7 +4,7 @@
 # Wiki: https://wiki.ezar.it/projects/ezarevents
 
 # PERMISSIONS
-ADMIN-PERMISSION: "ezar.sumo"
+ADMIN-PERMISSION: "ezar.sumo.admin"
 JOIN-PERMISSION: "ezar.sumo.join"
 SPEC-PERMISSION: "ezar.sumo.spec"
 HOST-PERMISSION: "ezar.sumo.host"
@@ -34,6 +34,7 @@ HOSTED: "&cEvent already on."
 NOT-INEVENT: "&cYou are not in the tournament."
 TOURNAMENT-BROADCAST-MESSAGE: "&9%host% &eStarted &aSumo &eevent is going to begun in &b%time%s &7Type &7/sumo join"
 TOURNAMENT-COUNTDOWN-MESSAGE: "&e(Event) &7Tournament will begin in &9%time% &7seconds..."
+TOURNAMENT-STOP-MESSAGE: "&e(Event) &cThe event has been cancelled by the host..."
 TOURNAMENT-JOIN: "&a%player% &ejoined the tournament. (&9%inTournament%&e/&9%maxTournament%&e)"
 TOURNAMENT-QUIT: "&a%player% &eleft the tournament. (&9%inTournament%&e/&9%maxTournament%&e)"
 SPEC-MESSAGE: "&aYou are spectating the tournament."

@@ -1,6 +1,7 @@
 package me.diyar.ezarevents;
 
 import me.diyar.ezarevents.utils.assemble.Assemble;
+import me.diyar.ezarevents.utils.assemble.AssembleAdapter;
 import me.diyar.ezarevents.utils.assemble.AssembleStyle;
 import lombok.Getter;
 import me.diyar.ezarevents.commands.SumoCommand;
@@ -19,10 +20,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
 
 import static me.diyar.ezarevents.expansions.PlaceHolders.registerHook;
 import static me.diyar.ezarevents.utils.MatchState.changeState;
@@ -34,6 +32,7 @@ public final class Main extends JavaPlugin {
     public static FileConfiguration designConfig;
 
     public static HashMap<String, String> EventState = new HashMap<>();
+    public static Map<Class, String> test = new HashMap<>();
     public static ArrayList<UUID> inGame = new ArrayList<>();
     public static ArrayList<UUID> inMatch = new ArrayList<>();
     public static ArrayList<UUID> fighting = new ArrayList<>();
@@ -55,6 +54,7 @@ public final class Main extends JavaPlugin {
         try {
             Main.designConfig.save(Main.design);
             Main.designConfig.load(Main.design);
+            registerScoreboard();
         } catch (IOException | InvalidConfigurationException e) {
             e.printStackTrace();
         }
@@ -63,8 +63,7 @@ public final class Main extends JavaPlugin {
     @EventHandler(priority= EventPriority.HIGH)
     private void registerScoreboard(){
         if(Main.getInstance().getConfig().getBoolean("SCOREBOARD")){
-            Assemble assemble = new Assemble(this, new SumoScoreboard());
-            assemble.setAssembleStyle(AssembleStyle.CUSTOM);
+            new Assemble(this, (AssembleAdapter) new SumoScoreboard());
         }
     }
 

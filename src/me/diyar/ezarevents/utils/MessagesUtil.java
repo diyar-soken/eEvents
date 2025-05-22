@@ -28,6 +28,7 @@ public class MessagesUtil {
     public static String NOT_INEVENT = "NOT-INEVENT";
     public static String TOURNAMENT_BROADCAST_MESSAGE = "TOURNAMENT-BROADCAST-MESSAGE";
     public static String TOURNAMENT_COUNTDOWN_MESSAGE = "TOURNAMENT-COUNTDOWN-MESSAGE";
+    public static String TOURNAMENT_STOP_MESSAGE = "TOURNAMENT-STOP-MESSAGE";
     public static String TOURNAMENT_JOIN = "TOURNAMENT-JOIN";
     public static String TOURNAMENT_QUIT = "TOURNAMENT-QUIT";
     public static String INEVENT = "INEVENT";
